@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Text, TextInput, View, StyleSheet,TouchableOpacity, FontAwesome, FlatList} from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list';
-import { collection, getDocs, doc, onSnapshot, query, where, getDoc } from 'firebase/firestore';
-import { db } from '../../firebase';
 
 
 function Bilhetes({navigation}) {

@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "793463193214",
+    "project_id": "appeasytrip-6a7c4",
+    "storage_bucket": "appeasytrip-6a7c4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:793463193214:android:05887630718b43d7e9e22f",
+        "android_client_info": {
+          "package_name": "com.app_easytrip"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "793463193214-4td27chhigi3rbofgghp94mbpf2bkeeb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCzyMD0tYug41vkC74ML8QU8WbtgyPDyXs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "793463193214-4td27chhigi3rbofgghp94mbpf2bkeeb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:793463193214:android:758e95e4428d988ce9e22f",
+        "android_client_info": {
+          "package_name": "com.easytrip"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "793463193214-4td27chhigi3rbofgghp94mbpf2bkeeb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCzyMD0tYug41vkC74ML8QU8WbtgyPDyXs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "793463193214-4td27chhigi3rbofgghp94mbpf2bkeeb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

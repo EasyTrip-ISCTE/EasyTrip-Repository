@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Button, Image, ImageBackground, StyleSheet, KeyboardAvoidingView, TextInput, TouchableOpacity } from 'react-native';
-import { auth } from '../../firebase';
-import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth"
-import { db } from '../../firebase';
-import { getDoc, doc, collection, getDocs } from 'firebase/firestore';
-import { SafeAreaView } from 'react-native-safe-area-context';
+
 
 function Login( {navigation} ) {
     const[email, setEmail] = useState('')

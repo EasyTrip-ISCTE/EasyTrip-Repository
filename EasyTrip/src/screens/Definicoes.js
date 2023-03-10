@@ -1,9 +1,7 @@
 import React from 'react';
-import { auth, db } from '../../firebase';
 import { Alert, View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {StackActions} from '@react-navigation/native';
-import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 
     
 

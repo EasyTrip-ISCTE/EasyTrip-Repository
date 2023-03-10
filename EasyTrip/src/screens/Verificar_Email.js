@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet} from 'react-native';
-import { auth} from '../../firebase';
+
 
 function Verificar_Email({navigation}) {
     

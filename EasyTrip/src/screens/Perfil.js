@@ -1,8 +1,6 @@
 import React, { useEffect } from 'react';
 import { View, Text, ImageBackground, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import { useState } from 'react';
-import { auth, db } from '../../firebase';
-import { doc, getDoc, Timestamp, setDoc } from 'firebase/firestore';
 import { Popup, Root} from 'react-native-popup-confirm-toast';
 
 function Perfil( {navigation} ) {

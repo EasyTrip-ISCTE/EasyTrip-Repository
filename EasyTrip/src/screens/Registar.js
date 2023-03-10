@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Button, Image, StyleSheet, KeyboardAvoidingView, TextInput, TouchableOpacity } from 'react-native';
-import { auth } from '../../firebase';
-import { createUserWithEmailAndPassword} from "firebase/auth"
-import { db } from '../../firebase';
-import { doc, setDoc } from 'firebase/firestore';
+
 
 function Registar( {navigation} ) {
 
@@ -13,10 +10,32 @@ function Registar( {navigation} ) {
     const[email, setEmail] = useState('')
     const[password, setPassword] = useState('')
     const[cc, setCc] = useState('')
+
     
+ /*   FirebaseAuth mAuth;
 
     const handleSingUp = () => {
-        createUserWithEmailAndPassword(auth, email, password)
+        mAuth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+                        // Sign in success, update UI with the signed-in user's information
+                        Log.d(TAG, "createUserWithEmail:success");
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        updateUI(user);
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                        Toast.makeText(EmailPasswordActivity.this, "Authentication failed.",
+                                Toast.LENGTH_SHORT).show();
+                        updateUI(null);
+                    }
+                }
+            });
+        }
+    
+    /*    createUserWithEmailAndPassword(auth, email, password)
         .then((userCredentials) => {
             setDoc(doc(db,"users", userCredentials.user.uid), {
                 PrimeiroNome: nome,
@@ -30,8 +49,8 @@ function Registar( {navigation} ) {
             
         })
         .catch(error => alert(error.message))
-    }
-
+    
+*/
     return (
         <KeyboardAvoidingView style={styles.container} behavior="padding">
             <View style={styles.imageView}>

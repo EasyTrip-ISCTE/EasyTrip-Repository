@@ -1,7 +1,7 @@
-import { collection, getDocs, onSnapshot } from 'firebase/firestore';
+
 import React, { useEffect, useState } from 'react';
 import { Text, View, StyleSheet,TouchableOpacity, FlatList } from 'react-native';
-import { db } from '../../firebase';
+
 
 function Passes({navigation}) {
 
