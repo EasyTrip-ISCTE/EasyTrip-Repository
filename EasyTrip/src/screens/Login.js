@@ -1,25 +1,40 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, createContext } from 'react';
 import { View, Text, Button, Image, ImageBackground, StyleSheet, KeyboardAvoidingView, TextInput, TouchableOpacity } from 'react-native';
-import { auth } from '../../firebase';
-import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth"
-import { db } from '../../firebase';
-import { getDoc, doc, collection, getDocs } from 'firebase/firestore';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import auth from "@react-native-firebase/auth";
+
+
+// export const AuthContext = createContext();
 
 function Login( {navigation} ) {
     const[email, setEmail] = useState('')
     const[password, setPassword] = useState('')
 
+    const [initializing, setInitializing] = useState(true);
+    const [user, setUser] = useState();
+
+    
+
+    // Handle user state changes
+    function onAuthStateChanged(user) {
+        setUser(user);
+        if (initializing) setInitializing(false);
+    }
+
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
+        const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+        return subscriber; // unsubscribe on unmount
+    }, []);
+
+/*    useEffect(() => {
+        const unsubscribe = auth().onAuthStateChanged(auth, (user) => {
             if (user){
                 navigation.navigate("Login")
             }
         })
 
         return unsubscribe;
-    }, [])    
-
+    }, []) 
+*/
     // referencia da coleção
     //const docRef = doc(db, "users", auth.currentUser.uid);
 
@@ -35,7 +50,8 @@ function Login( {navigation} ) {
     
 
     const handleLogin = () => {
-        signInWithEmailAndPassword(auth, email, password)
+        auth()
+        .signInWithEmailAndPassword(email, password)
         .then((userCredentials) => {
             const user = userCredentials.user;
             //const nomeCompleto = getDoc(doc(db, "users", auth.currentUser.uid));

@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { auth, db } from '../../firebase';
-import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore';
 import { ScrollView, StyleSheet, View, Text, Image, ImageBackground, TouchableOpacity} from 'react-native';
 
 function Cartao({navigation}) {

@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { auth, db } from '../../firebase';
-import { collection, getDocs, query, where } from 'firebase/firestore';
 
 function Bilhetes_User() {
 

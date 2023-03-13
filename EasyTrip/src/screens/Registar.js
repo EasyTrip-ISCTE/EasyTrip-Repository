@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Button, Image, StyleSheet, KeyboardAvoidingView, TextInput, TouchableOpacity } from 'react-native';
-import { auth } from '../../firebase';
-import { createUserWithEmailAndPassword} from "firebase/auth"
-import { db } from '../../firebase';
-import { doc, setDoc } from 'firebase/firestore';
+import auth from "@react-native-firebase/auth";
+import firestore from '@react-native-firebase/firestore';
+
+
 
 function Registar( {navigation} ) {
 
@@ -13,10 +13,38 @@ function Registar( {navigation} ) {
     const[email, setEmail] = useState('')
     const[password, setPassword] = useState('')
     const[cc, setCc] = useState('')
-    
+
 
     const handleSingUp = () => {
-        createUserWithEmailAndPassword(auth, email, password)
+        auth()
+        .createUserWithEmailAndPassword(email, password)
+        .then(() => {
+            console.log('User account created & signed in!');
+            firestore()
+            .collection("users")
+            .doc(auth().currentUser.uid)
+            .set({
+                PrimeiroNome: nome,
+                Apelido: apelido,
+                Morada: morada,
+                CartaoCidadao: cc
+            })
+            .then(() => {
+                console.log('User added!');
+            });
+        })
+        .catch(error => {
+            if (error.code === 'auth/email-already-in-use') {
+                console.log('That email address is already in use!');
+            }
+            if (error.code === 'auth/invalid-email') {
+                console.log('That email address is invalid!');
+            }
+            console.error(error);
+        });
+    }
+    
+    /*    createUserWithEmailAndPassword(auth, email, password)
         .then((userCredentials) => {
             setDoc(doc(db,"users", userCredentials.user.uid), {
                 PrimeiroNome: nome,
@@ -30,8 +58,8 @@ function Registar( {navigation} ) {
             
         })
         .catch(error => alert(error.message))
-    }
-
+    
+*/
     return (
         <KeyboardAvoidingView style={styles.container} behavior="padding">
             <View style={styles.imageView}>

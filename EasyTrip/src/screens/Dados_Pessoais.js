@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Button, Image, StyleSheet, KeyboardAvoidingView, TextInput, TouchableOpacity } from 'react-native';
-import { auth } from '../../firebase';
-import { createUserWithEmailAndPassword} from "firebase/auth"
-import { db } from '../../firebase';
-import { doc, getDoc } from 'firebase/firestore';
+
+
 
 function Dados_Pessoais( {navigation} ) {
 

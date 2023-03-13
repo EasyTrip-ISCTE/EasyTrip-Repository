@@ -1,9 +1,7 @@
-import { FirebaseError } from 'firebase/app';
-import { getDoc, doc, setDoc, collection, query, getDocs, where, Timestamp, addDoc } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import { View,Text, Image, TextInput, StyleSheet, TouchableOpacity} from 'react-native';
 import { Popup, Root } from 'react-native-popup-confirm-toast';
-import { auth, db } from '../../firebase';
+
 
 function MBWAY({route,navigation}) {
 
