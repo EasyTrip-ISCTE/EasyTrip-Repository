@@ -1,22 +1,27 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext} from 'react';
 import { View, Text, ImageBackground, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import { useState } from 'react';
 import { Popup, Root} from 'react-native-popup-confirm-toast';
+import auth from "@react-native-firebase/auth";
+import firestore from '@react-native-firebase/firestore';
+//import { AuthContext } from './Login';
 
 function Perfil( {navigation} ) {
 
+//    const {user} = useContext(AuthContext);
+
     const [nome, setNome] = useState("");
-    const userRef = doc(db, "users", auth.currentUser.uid);
+    const userRef = firestore().collection("users").doc(auth().currentUser.uid);
     const [numeroCartao, setNumeroCartao] = useState(""); 
     const [validadeCartao, setValidadeCartao] = useState(""); 
-    const cartaoUserRef = doc(db, "cartaoUser", auth.currentUser.uid);
+    const cartaoUserRef = firestore().collection("cartaoUser").doc(auth().currentUser.uid);
     const date = new Date();
     const currentMonth = date.getMonth() + 1;
     const currentYear = date.getFullYear() + 2;
 
     
     useEffect(() => {
-        getDoc(userRef)
+        firestore().doc(userRef)
         .then((doc) => {
             setNome(doc.data()['PrimeiroNome']);
         });
@@ -30,7 +35,7 @@ function Perfil( {navigation} ) {
 
     function criarCartão(){
 
-        getDoc(cartaoUserRef).then(docSnap => {
+        firestore().getDoc(cartaoUserRef).then(docSnap => {
             if(docSnap.exists()){
                // console.log("Já possui um cartão válido");
                 {Popup.show({

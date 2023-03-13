@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Button, Image, StyleSheet, KeyboardAvoidingView, TextInput, TouchableOpacity } from 'react-native';
+import auth from "@react-native-firebase/auth";
+import firestore from '@react-native-firebase/firestore';
+
 
 
 function Registar( {navigation} ) {
@@ -11,29 +14,35 @@ function Registar( {navigation} ) {
     const[password, setPassword] = useState('')
     const[cc, setCc] = useState('')
 
-    
- /*   FirebaseAuth mAuth;
 
     const handleSingUp = () => {
-        mAuth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if (task.isSuccessful()) {
-                        // Sign in success, update UI with the signed-in user's information
-                        Log.d(TAG, "createUserWithEmail:success");
-                        FirebaseUser user = mAuth.getCurrentUser();
-                        updateUI(user);
-                    } else {
-                        // If sign in fails, display a message to the user.
-                        Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                        Toast.makeText(EmailPasswordActivity.this, "Authentication failed.",
-                                Toast.LENGTH_SHORT).show();
-                        updateUI(null);
-                    }
-                }
+        auth()
+        .createUserWithEmailAndPassword(email, password)
+        .then(() => {
+            console.log('User account created & signed in!');
+            firestore()
+            .collection("users")
+            .doc(auth().currentUser.uid)
+            .set({
+                PrimeiroNome: nome,
+                Apelido: apelido,
+                Morada: morada,
+                CartaoCidadao: cc
+            })
+            .then(() => {
+                console.log('User added!');
             });
-        }
+        })
+        .catch(error => {
+            if (error.code === 'auth/email-already-in-use') {
+                console.log('That email address is already in use!');
+            }
+            if (error.code === 'auth/invalid-email') {
+                console.log('That email address is invalid!');
+            }
+            console.error(error);
+        });
+    }
     
     /*    createUserWithEmailAndPassword(auth, email, password)
         .then((userCredentials) => {
