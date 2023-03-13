@@ -4,23 +4,24 @@ import { useState } from 'react';
 import { Popup, Root} from 'react-native-popup-confirm-toast';
 import auth from "@react-native-firebase/auth";
 import firestore from '@react-native-firebase/firestore';
-//import { AuthContext } from './Login';
+
+import { AuthContext } from '../components/AuthProvider';
 
 function Perfil( {navigation} ) {
 
-//    const {user} = useContext(AuthContext);
+    const {user} = useContext(AuthContext);
 
     const [nome, setNome] = useState("");
-    const userRef = firestore().collection("users").doc(auth().currentUser.uid);
+    const PrimeiroNome = firestore().collection("users").doc(user.uid).get();
     const [numeroCartao, setNumeroCartao] = useState(""); 
     const [validadeCartao, setValidadeCartao] = useState(""); 
-    const cartaoUserRef = firestore().collection("cartaoUser").doc(auth().currentUser.uid);
+//    const cartaoUserRef = firestore().collection("cartaoUser").doc(user.uid);
     const date = new Date();
     const currentMonth = date.getMonth() + 1;
     const currentYear = date.getFullYear() + 2;
 
     
-    useEffect(() => {
+/*    useEffect(() => {
         firestore().doc(userRef)
         .then((doc) => {
             setNome(doc.data()['PrimeiroNome']);
@@ -28,14 +29,17 @@ function Perfil( {navigation} ) {
         getDoc(cartaoUserRef).then((doc1) => {
             setNumeroCartao(doc1?.data()['Numero']);
             setValidadeCartao(doc1?.data()['Validade']);
-            console.log("Estou aquiiiiii 2")
+            console.log("Estou aquiiiiii 2 --> ", user.uid)
         });
         
-    },[])    
+    },[])    */
 
     function criarCartão(){
+        
+        console.log(PrimeiroNome);
 
-        firestore().getDoc(cartaoUserRef).then(docSnap => {
+
+    /*    firestore().getDoc(cartaoUserRef).then(docSnap => {
             if(docSnap.exists()){
                // console.log("Já possui um cartão válido");
                 {Popup.show({
@@ -67,15 +71,14 @@ function Perfil( {navigation} ) {
                 console.log("Criei cartão")
             }
         })
-        
-        
+     */   
     }
 
     return (
     <Root>
         <ImageBackground style={styles.background} source={require("../assets/perfil2.jpg")}>
                 <View style={styles.inicioView}>
-                    <Text style={styles.titleText}>Bem-vindo, {nome}</Text>
+                    <Text style={styles.titleText}>Bem-vindo, {user.uid}</Text>
                 </View>
                 <TouchableOpacity onPress={() => navigation.navigate("Cartão")}>
                     <View style={styles.cartaoView}>
@@ -83,8 +86,8 @@ function Perfil( {navigation} ) {
                     </View>
                 </TouchableOpacity>
                 <View style={styles.informacaoView}>    
-                    <Text style={styles.text}>Número do Cartão: {numeroCartao}</Text>
-                    <Text style={styles.text}>Válido até: {validadeCartao}</Text>
+                    <Text style={styles.text}>Número do Cartão: ?{numeroCartao}</Text>
+                    <Text style={styles.text}>Válido até: ?{validadeCartao}</Text>
                 </View>
                 <View style={styles.buttonView}>
                     <TouchableOpacity style={styles.button} onPress={criarCartão}>

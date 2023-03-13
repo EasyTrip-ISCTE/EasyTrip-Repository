@@ -1,11 +1,14 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import { Alert, View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {StackActions} from '@react-navigation/native';
 
-    
+import { AuthContext } from '../components/AuthProvider';
+
 
 function Definicoes({navigation}) {
+
+    const {logout} = useContext(AuthContext);
 
     const onLogout = () => {
         signOut(auth)
@@ -46,7 +49,7 @@ function Definicoes({navigation}) {
                 </TouchableOpacity>
             </View>
             <View>
-                <TouchableOpacity onPress={() => onLogout()}> 
+                <TouchableOpacity onPress={() => logout()}> 
                     <Image style={styles.buttonLogOut} source={require("../assets/logout1.png")}/>
                     <Text style={styles.text}>LogOut</Text>
                 </TouchableOpacity>

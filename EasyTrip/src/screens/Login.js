@@ -1,70 +1,17 @@
-import React, { useEffect, useState, createContext } from 'react';
+import React, { useEffect, useState, createContext, useContext } from 'react';
 import { View, Text, Button, Image, ImageBackground, StyleSheet, KeyboardAvoidingView, TextInput, TouchableOpacity } from 'react-native';
 import auth from "@react-native-firebase/auth";
+import { AuthContext } from '../components/AuthProvider';
 
-
-// export const AuthContext = createContext();
 
 function Login( {navigation} ) {
     const[email, setEmail] = useState('')
     const[password, setPassword] = useState('')
-
-    const [initializing, setInitializing] = useState(true);
-    const [user, setUser] = useState();
-
     
 
-    // Handle user state changes
-    function onAuthStateChanged(user) {
-        setUser(user);
-        if (initializing) setInitializing(false);
-    }
-
-    useEffect(() => {
-        const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-        return subscriber; // unsubscribe on unmount
-    }, []);
-
-/*    useEffect(() => {
-        const unsubscribe = auth().onAuthStateChanged(auth, (user) => {
-            if (user){
-                navigation.navigate("Login")
-            }
-        })
-
-        return unsubscribe;
-    }, []) 
-*/
-    // referencia da coleção
-    //const docRef = doc(db, "users", auth.currentUser.uid);
-
-    // da me o nome do utilizador (não está a funcionar)
-    /* getDoc(docRef)
-        .then((snapshot) => {
-            const nome = snapshot.data()['PrimeiroNome'];
-            console.log(nome);
-        })
-    */    
-
-    //Fazer o logout (guarda sempre o ultimo login)
-    
-
-    const handleLogin = () => {
-        auth()
-        .signInWithEmailAndPassword(email, password)
-        .then((userCredentials) => {
-            const user = userCredentials.user;
-            //const nomeCompleto = getDoc(doc(db, "users", auth.currentUser.uid));
-            navigation.navigate("Perfil")
-            console.log("Logged in with:" , user.email);
-        })
-        .catch(error => alert(error.message))
-    }
-
-    
+    const { login } = useContext(AuthContext);
 
     return (
-        
         <KeyboardAvoidingView style={styles.container} behavior="padding">
             <View style={styles.imageView}>
                 <Image resizeMode='center' source={require("../assets/LogoEasyTrip.png")}></Image>
@@ -86,7 +33,7 @@ function Login( {navigation} ) {
                 />
             </View>
             <View style={styles.buttonView}>
-                <TouchableOpacity onPress={ handleLogin } style={styles.button}>
+                <TouchableOpacity onPress={() => login(email,password) } style={styles.button}>
                     <Text style={styles.buttonText}>Login</Text>
                 </TouchableOpacity>
             </View>
