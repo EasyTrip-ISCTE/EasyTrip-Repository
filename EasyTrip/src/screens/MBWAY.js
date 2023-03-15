@@ -1,43 +1,46 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { View,Text, Image, TextInput, StyleSheet, TouchableOpacity} from 'react-native';
 import { Popup, Root } from 'react-native-popup-confirm-toast';
+import firestore from '@react-native-firebase/firestore';
 
+import { AuthContext } from '../components/AuthProvider';
 
 function MBWAY({route,navigation}) {
 
     //const date = new Date();
     //console.log("Data", date.getDay());
     //console.log(route.params.titulo.titulo);
+    const {user} = useContext(AuthContext);
 
     const [passe, setPasse] = useState("");
     const[numeroTelemovel, setNumeroTelemovel] = useState('')
     
-    function comprarPasse(){
+    function comprarTitulo(){
 
-        console.log("AQUIIIII");
-        const cartaoUserRef = doc(db, "cartaoUser", auth.currentUser.uid);
-        
+        //console.log("AQUIIIII");
+        //const cartaoUserRef = doc(db, "cartaoUser", auth.currentUser.uid);
 
         console.log("MBWAY",route.params.IsPasse);
         //verificar se já existe um passe e se não existir posso escolher um tipo de passe para comprar
         let listaPasse = [];
 
-        getDoc(cartaoUserRef).then(docSnap => {
-            if(docSnap.exists()){
+        firestore().collection("cartaoUser").doc(user.uid).get().then(docSnap => {
+        
+            if(docSnap.exists){
+            
                 if(route.params.IsPasse){//passes
-                    const queryPasse = query(collection(db, "passesUser"), where("idUser", "==", auth.currentUser.uid));
-                    getDocs(queryPasse).then(query => {
+                    firestore().collection("passesUser").where("idUser", "==", user.uid).get().then(query => {
                         query.forEach((doc) => {
                             listaPasse.push({...doc.data(), id:doc.id});
                         })
                         setPasse(listaPasse[0]);
                         if(listaPasse[0] == undefined){//se nao tiver passe, cria passe
-                            addDoc(collection(db,"passesUser"), {
+                            firestore().collection("passesUser").add({
                                 Tipo: route.params.titulo.titulo.Tipo,
                                 Validade: "Dezembro",
                                 idPasse: Number(route.params.titulo.titulo.id),
-                                idUser: auth.currentUser.uid,
-                            });
+                                idUser: user.uid,
+                            })
                             {Popup.show({
                                 type: 'success',
                                 title: 'Passe criado com sucesso',
@@ -50,12 +53,12 @@ function MBWAY({route,navigation}) {
                             return;
                         } else {//se ja tiver faz update e altera tipo de passe
                             if(listaPasse[0].Tipo != route.params.titulo.titulo.Tipo) {//se o passe que tem for diferente do que pretende
-                                setDoc(doc(db,"passesUser", listaPasse[0].id), {
+                                firestore().collection("passesUser").doc(listaPasse[0].id).set({
                                     Tipo: route.params.titulo.titulo.Tipo,
                                     Validade: "Dezembro",
                                     idPasse: Number(route.params.titulo.titulo.id),
-                                    idUser: auth.currentUser.uid,
-                                });
+                                    idUser: user.uid,
+                                })
                                 {Popup.show({
                                     type: 'success',
                                     title: 'Alteração confirmada',
@@ -82,14 +85,16 @@ function MBWAY({route,navigation}) {
                 }
                 //bilhetes
                 else{
-                    console.log(route.params.titulo.titulo.Destino);
-                    addDoc(collection(db,"bilhetesUser"),{
-                        idUser: auth.currentUser.uid,
+                    console.log("Estou aqui e vou para", route.params.titulo.titulo.Destino);
+                    firestore().collection("bilhetesUser").add({
+                        idUser: user.uid,
                         Origem: route.params.titulo.titulo.Origem,
                         Destino:  route.params.titulo.titulo.Destino,
                         Valor: route.params.titulo.titulo.Valor,
                         Valido : true
                     })
+                    console.log("Comprei bilhete")
+
                     {Popup.show({
                         type: 'success',
                         title: 'Compra confirmada',
@@ -133,14 +138,13 @@ function MBWAY({route,navigation}) {
                 />
             </View>
             
-            <TouchableOpacity style={styles.button} onPress={() => comprarPasse()}>
+            <TouchableOpacity style={styles.button} onPress={() => comprarTitulo()}>
                 <Text style={styles.buttonText}>Pagar</Text>
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => navigation.navigate("Home")}>
                 <Image style={styles.image_inicio} source={require("../assets/inicio.png")}/>
             </TouchableOpacity>
-
         </View>
     </Root>
 )}

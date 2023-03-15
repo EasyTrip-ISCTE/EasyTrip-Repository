@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { View, Text, StyleSheet} from 'react-native';
-
+import { AuthContext } from '../components/AuthProvider';
 
 function Verificar_Email({navigation}) {
     
-    const email = auth.currentUser.email;
+    const {user} = useContext(AuthContext);
     
     return (
         <View style={styles.container}>
-            <Text style={styles.text}>Email: {email}</Text>
+            <Text style={styles.text}>Email: {user.email}</Text>
             <Text style={styles.text}>O seu email já foi validado!</Text>
         </View>
     );

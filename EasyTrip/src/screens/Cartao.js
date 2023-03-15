@@ -1,38 +1,68 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { ScrollView, StyleSheet, View, Text, Image, ImageBackground, TouchableOpacity} from 'react-native';
+import auth from "@react-native-firebase/auth";
+import firestore from '@react-native-firebase/firestore';
+import { AuthContext } from '../components/AuthProvider';
 
 function Cartao({navigation}) {
 
-    const cartaoUserRef = doc(db, "cartaoUser", auth.currentUser.uid);
-
     const [passe, setPasse] = useState("");
     const [bilhetes, setBilhetes] = useState("");
+    const [cartaoData, setCartaoData] = useState(null);
 
-    const queryPasse = query(collection(db, "passesUser"), where("idUser", "==", auth.currentUser.uid));
-    const queryBilhetes = query(collection(db, "bilhetesUser"), where("idUser", "==", auth.currentUser.uid));
+    const {user} = useContext(AuthContext);
 
-    useEffect(() => {
-        
-        let listaPasse = [];
-        let listaBilhetes = [];
+    let listaPasse = [];
+    let listaBilhetes = [];
 
-        getDocs(queryPasse).then(query => {
+    const queryPasse = async() =>{ 
+        firestore()
+        .collection("passesUser")
+        .where("idUser", "==", user.uid)
+        .get()
+        .then(query => {
             query.forEach((doc) => {
                 listaPasse.push({...doc.data(), id:doc.id});
             })
             setPasse(listaPasse[0]);
             console.log("Estou aquiiiiii 4");
         });
+    }
 
-        getDocs(queryBilhetes).then(query => {
+    const queryBilhetes = async() => {
+        firestore()
+        .collection("bilhetesUser")
+        .where("idUser", "==", user.uid)
+        .get()
+        .then(query => {
             query.forEach((doc1) => {
                 listaBilhetes.push({...doc1.data(), id:doc1.id});
             })
             setBilhetes(listaBilhetes);
             console.log("Estou aquiiiiii 3");
         })
-        //console.log(bilhetes);
+    }
+//    const queryPasse = (collection(db, "passesUser"), where("idUser", "==", auth.currentUser.uid));
+//    const queryBilhetes = query(collection(db, "bilhetesUser"), where("idUser", "==", auth.currentUser.uid));
+
+    const getCartao = async() =>{
+        const cartao = await firestore()
+        .collection("cartaoUser")
+        .doc(user.uid)
+        .get()
+        .then((documentSnapshot) => {
+            if(documentSnapshot.exists) {
+                console.log('Cartao Data: ', documentSnapshot.data());
+                setCartaoData(documentSnapshot.data());
+            }
+        })
+    }
+
+    useEffect(() => {
         
+        queryPasse();
+        queryBilhetes();
+
     }, [])
 
     return (

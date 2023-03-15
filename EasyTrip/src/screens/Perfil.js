@@ -11,37 +11,54 @@ function Perfil( {navigation} ) {
 
     const {user} = useContext(AuthContext);
 
-    const [nome, setNome] = useState("");
-    const PrimeiroNome = firestore().collection("users").doc(user.uid).get();
-    const [numeroCartao, setNumeroCartao] = useState(""); 
-    const [validadeCartao, setValidadeCartao] = useState(""); 
-//    const cartaoUserRef = firestore().collection("cartaoUser").doc(user.uid);
+    const [userData, setUserData] = useState(null);
+    const [cartaoData, setCartaoData] = useState(null);
+
     const date = new Date();
     const currentMonth = date.getMonth() + 1;
     const currentYear = date.getFullYear() + 2;
 
-    
-/*    useEffect(() => {
-        firestore().doc(userRef)
-        .then((doc) => {
-            setNome(doc.data()['PrimeiroNome']);
-        });
-        getDoc(cartaoUserRef).then((doc1) => {
-            setNumeroCartao(doc1?.data()['Numero']);
-            setValidadeCartao(doc1?.data()['Validade']);
-            console.log("Estou aquiiiiii 2 --> ", user.uid)
-        });
+    const getUser = async() =>{
+        const utilizador = await firestore()
+        .collection("users")
+        .doc(user.uid)
+        .get()
+        .then((documentSnapshot) => {
+            if(documentSnapshot.exists) {
+                console.log('User Data: ', documentSnapshot.data());
+                setUserData(documentSnapshot.data());
+            }
+        })
+    }
+
+    const getCartao = async() =>{
+        const cartao = await firestore()
+        .collection("cartaoUser")
+        .doc(user.uid)
+        .get()
+        .then((documentSnapshot) => {
+            if(documentSnapshot.exists) {
+                console.log('Cartao Data: ', documentSnapshot.data());
+                setCartaoData(documentSnapshot.data());
+            }
+        })
+    }
+
+    useEffect(() => {
+        getUser();
+        getCartao();
         
-    },[])    */
+    }, [])    
 
-    function criarCartão(){
-        
-        console.log(PrimeiroNome);
+    const criarCartão = async() =>{
 
-
-    /*    firestore().getDoc(cartaoUserRef).then(docSnap => {
-            if(docSnap.exists()){
-               // console.log("Já possui um cartão válido");
+        const cartao = await firestore()
+        .collection("cartaoUser")
+        .doc(user.uid)
+        .get()
+        .then((documentSnapshot) => {
+            if(documentSnapshot.exists) {
+                console.log("Já possui um cartão válido");
                 {Popup.show({
                     type: 'danger',
                     title: 'Erro na criação',
@@ -54,12 +71,10 @@ function Perfil( {navigation} ) {
             else{
                 const numero = Math.floor(Math.random() * 1000000000000000) + 1
                 const validade = currentMonth + "/" + currentYear // 1/2022
-                setDoc(doc(db,"cartaoUser", auth.currentUser.uid), {
+                firestore().collection("cartaoUser").doc(auth().currentUser.uid).set({
                     Numero: numero,
                     Validade: validade
                 });
-                setNumeroCartao(numero)
-                setValidadeCartao(validade)
                 {Popup.show({
                     type: 'success',
                     title: 'Cartão criado com sucesso!',
@@ -70,15 +85,14 @@ function Perfil( {navigation} ) {
                     })}
                 console.log("Criei cartão")
             }
-        })
-     */   
+        }); 
     }
 
     return (
     <Root>
         <ImageBackground style={styles.background} source={require("../assets/perfil2.jpg")}>
                 <View style={styles.inicioView}>
-                    <Text style={styles.titleText}>Bem-vindo, {user.uid}</Text>
+                    <Text style={styles.titleText}>Bem-vindo, {userData ? userData.PrimeiroNome : ""}</Text>
                 </View>
                 <TouchableOpacity onPress={() => navigation.navigate("Cartão")}>
                     <View style={styles.cartaoView}>
@@ -86,8 +100,8 @@ function Perfil( {navigation} ) {
                     </View>
                 </TouchableOpacity>
                 <View style={styles.informacaoView}>    
-                    <Text style={styles.text}>Número do Cartão: ?{numeroCartao}</Text>
-                    <Text style={styles.text}>Válido até: ?{validadeCartao}</Text>
+                    <Text style={styles.text}>Número do Cartão: {cartaoData ? cartaoData.Numero : ""}</Text>
+                    <Text style={styles.text}>Válido até: {cartaoData ? cartaoData.Validade : ""}</Text>
                 </View>
                 <View style={styles.buttonView}>
                     <TouchableOpacity style={styles.button} onPress={criarCartão}>

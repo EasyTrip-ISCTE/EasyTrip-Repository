@@ -4,7 +4,7 @@ import { View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
 function Pagamento({route, navigation}) {
 
     const titulo = route.params;
-    console.log("Pagamento",route.params.IsPasse);
+    //console.log("Pagamento",route.params.IsPasse);
     
 
     return (
