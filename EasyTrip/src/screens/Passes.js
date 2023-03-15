@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { Text, View, StyleSheet,TouchableOpacity, FlatList } from 'react-native';
-
+import firestore from '@react-native-firebase/firestore';
 
 function Passes({navigation}) {
 
@@ -10,8 +10,7 @@ function Passes({navigation}) {
     
     useEffect(() => {
         let listaPasses = [];
-        getDocs(collection(db, "passes"))
-        .then (query => {
+        firestore().collection("passes").get().then(query => {
             query.forEach((doc) => {
                 listaPasses.push({...doc.data(), id:doc.id});
             })

@@ -1,10 +1,9 @@
 import React from 'react';
+import { Text } from 'react-native';
 
 function Notificacoes() {
     return (
-        <div>
-            
-        </div>
+        <Text>Notificações</Text>
     );
 }
 

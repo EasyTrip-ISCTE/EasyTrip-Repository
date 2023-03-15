@@ -1,16 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+
+import firestore from '@react-native-firebase/firestore';
+
+import { AuthContext } from '../components/AuthProvider';
 
 function Bilhetes_User() {
 
+    const {user} = useContext(AuthContext);
     const [bilhetes, setBilhetes] = useState([]);
 
-    const queryBilhetes = query(collection(db, "bilhetesUser"), where("idUser", "==", auth.currentUser.uid));
+    //const queryBilhetes = query(collection(db, "bilhetesUser"), where("idUser", "==", auth.currentUser.uid));
     
     useEffect(() => {
         let listaBilhetes = [];
 
-        getDocs(queryBilhetes).then(query => {
+        firestore().collection("bilhetesUser").where("idUser", "==", user.uid).get().then(query => {
             query.forEach((doc1) => {
                 listaBilhetes.push({...doc1.data(), id:doc1.id});
             })

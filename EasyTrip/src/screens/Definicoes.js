@@ -1,7 +1,5 @@
 import React, {useContext} from 'react';
 import { Alert, View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
-import {useNavigation} from '@react-navigation/native';
-import {StackActions} from '@react-navigation/native';
 
 import { AuthContext } from '../components/AuthProvider';
 
@@ -10,16 +8,6 @@ function Definicoes({navigation}) {
 
     const {logout} = useContext(AuthContext);
 
-    const onLogout = () => {
-        signOut(auth)
-            .then(() => {
-                console.log("User signed out")
-                navigation.navigate('PaginaInicial')
-            })
-        .catch((err) => {
-        console.log(err.message)
-        })
-    }
 
     return (
         <View style={styles.container}>
