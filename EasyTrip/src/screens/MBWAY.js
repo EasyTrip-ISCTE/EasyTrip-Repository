@@ -91,7 +91,7 @@ function MBWAY({route,navigation}) {
                         Origem: route.params.titulo.titulo.Origem,
                         Destino:  route.params.titulo.titulo.Destino,
                         Valor: route.params.titulo.titulo.Valor,
-                        Valido : true
+                        Estado : "Valido"
                     })
                     console.log("Comprei bilhete")
 
