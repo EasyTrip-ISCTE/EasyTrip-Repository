@@ -88,6 +88,20 @@ function Perfil( {navigation} ) {
         }); 
     }
 
+    const getTituloEmUtilizacao = async() => {
+        await firestore().collection("bilhetesUser").where("idUser", "==", user.uid).where("Estado", "==", "Em utilização").get().then( querySnapshot =>{
+            if(querySnapshot.empty){
+                return navigation.navigate("Título em utilização", {titulo: ""})
+            }
+            else{
+                querySnapshot.forEach(element => {
+                    return navigation.navigate("Título em utilização", {titulo: element.data(), tituloId: element.id})
+                });
+            }
+            
+        })
+    }
+
     return (
     <Root>
         <ImageBackground style={styles.background} source={require("../assets/perfil2.jpg")}>
@@ -106,6 +120,11 @@ function Perfil( {navigation} ) {
                 <View style={styles.buttonView}>
                     <TouchableOpacity style={styles.button} onPress={criarCartão}>
                         <Text style={styles.buttonText}>Criar Cartão</Text>
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.buttonView}>
+                    <TouchableOpacity style={styles.button} onPress={getTituloEmUtilizacao}>
+                        <Text style={styles.buttonText}>Ver título em utilização</Text>
                     </TouchableOpacity>
                 </View>
         </ImageBackground>
