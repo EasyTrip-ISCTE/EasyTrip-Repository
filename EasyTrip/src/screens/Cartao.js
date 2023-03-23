@@ -105,7 +105,6 @@ function Cartao({navigation}) {
                             
                         </ImageBackground>
                     </TouchableOpacity>
-                    
                 </ScrollView>
             </View>
             

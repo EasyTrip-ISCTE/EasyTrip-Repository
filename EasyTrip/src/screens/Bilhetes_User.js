@@ -15,7 +15,7 @@ function Bilhetes_User() {
     useEffect(() => {
         let listaBilhetes = [];
 
-        firestore().collection("bilhetesUser").where("idUser", "==", user.uid).get().then(query => {
+        firestore().collection("bilhetesUser").where("idUser", "==", user.uid).where("Estado", "==", "Valido").get().then(query => {
             query.forEach((doc1) => {
                 listaBilhetes.push({...doc1.data(), id:doc1.id});
             })
@@ -41,6 +41,7 @@ function Bilhetes_User() {
                             <Text style={styles.title}>Destino: {item.Destino}</Text>
                             <View style={styles.content}>
                                 <Text style={styles.text}>{item.Valor}€</Text>
+                                <Text style={styles.text}>Estado: {item.Estado}</Text>
                             </View>
                         </TouchableOpacity>
                     </View>

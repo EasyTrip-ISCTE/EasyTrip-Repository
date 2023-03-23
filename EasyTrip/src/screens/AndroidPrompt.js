@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, Modal, StyleSheet, Dimensions, TouchableOpacity} from "react-native";
-
+import NfcManager, {NfcTech} from 'react-native-nfc-manager';
 
 function AndroidPrompt(props, ref) {
     const [visible, setVisible] = useState(false);
@@ -20,9 +20,10 @@ function AndroidPrompt(props, ref) {
             <View style={styles.content}>
                 <View style={[styles.backdrop, StyleSheet.absoluteFill]}/>
                 <View style={styles.prompt}>
-                    <Text style={styles.hint}>{hintText || "Hello NFC"}</Text>
+                    <Text style={styles.hint}>{hintText || "Aproxime o dispositivo..."}</Text>
                     <TouchableOpacity style={styles.btn} onPress={()=>{
-                        setVisible(false);
+                        NfcManager.cancelTechnologyRequest()
+                        setVisible(false)
                         setHintTex("")
                     }}>
                         <Text>CANCEL</Text>

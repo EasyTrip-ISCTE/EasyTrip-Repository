@@ -26,6 +26,9 @@ import NFCReader from '../screens/NFCReader';
 import Tipo_Documentos from '../screens/Tipo_Documentos';
 import Upload from '../screens/Upload';
 import CC from '../screens/CC';
+import TitulosValidos from '../screens/TitulosValidos';
+import TituloEmUtilizacao from '../screens/TituloEmUtilizacao';
+
 
 
 const Stack = createNativeStackNavigator();
@@ -71,10 +74,10 @@ const AppStack = () => {
             <Stack.Screen name="Verificar Email" component={Verificar_Email} options={{headerStyle:{backgroundColor:'#ffb319'}}}/>
             <Stack.Screen name="Contactos" component={Contactos} options={{headerStyle:{backgroundColor:'#ffb319'}}}/>
             <Stack.Screen name="Pagamento" component={Pagamento} options={{headerStyle:{backgroundColor:'#ffb319'}}}/>
-            <Stack.Screen name="MBWAY" component={MBWAY} options={{headerStyle:{backgroundColor:'#ffb319'}}}/>
-            <Stack.Screen name="MB" component={MB} options={{headerStyle:{backgroundColor:'#ffb319'}}}/>
-            <Stack.Screen name="VISA" component={VISA} options={{headerStyle:{backgroundColor:'#ffb319'}}}/>
-            <Stack.Screen name="PAYPAL" component={PAYPAL} options={{headerStyle:{backgroundColor:'#ffb319'}}}/>
+            <Stack.Screen name="MBWAY" component={MBWAY} options={{headerStyle:{backgroundColor:'#ffb319'}, headerBackVisible:false}}/>
+            <Stack.Screen name="MB" component={MB} options={{headerStyle:{backgroundColor:'#ffb319'}, headerBackVisible:false}}/>
+            <Stack.Screen name="VISA" component={VISA} options={{headerStyle:{backgroundColor:'#ffb319'}, headerBackVisible:false}}/>
+            <Stack.Screen name="PAYPAL" component={PAYPAL} options={{headerStyle:{backgroundColor:'#ffb319'}, headerBackVisible:false}}/>
             <Stack.Screen name="Notificacoes" component={Notificacoes} options={{headerStyle:{backgroundColor:'#ffb319'}}}/>
             <Stack.Screen name="Ajuda" component={Ajuda} options={{headerStyle:{backgroundColor:'#ffb319'}}}/>
             <Stack.Screen name="Informações" component={Informacoes} options={{headerStyle:{backgroundColor:'#ffb319'}}}/>
@@ -84,6 +87,8 @@ const AppStack = () => {
             <Stack.Screen name="Tipo de Documento" component={Tipo_Documentos} options={{headerStyle:{backgroundColor:'#ffb319'}}}/>
             <Stack.Screen name="Tipo de Upload" component={Upload} options={{headerStyle:{backgroundColor:'#ffb319'}}}/>
             <Stack.Screen name="Cartão de Cidadão" component={CC} options={{headerStyle:{backgroundColor:'#ffb319'}}}/>
+            <Stack.Screen name="Escolha o título" component={TitulosValidos} options={{headerStyle:{backgroundColor:'#ffb319'}}}/>
+            <Stack.Screen name="Título em utilização" component={TituloEmUtilizacao} options={{headerStyle:{backgroundColor:'#ffb319'}, headerBackVisible:false}}/>
             <Stack.Screen name="Perfil" component={Tabs} options={{headerShown: false}}/>
         </Stack.Navigator>
     );
