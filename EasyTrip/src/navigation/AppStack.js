@@ -23,8 +23,12 @@ import Cartao from '../screens/Cartao';
 import Historico from '../screens/Historico';
 import Bilhetes_User from '../screens/Bilhetes_User';
 import NFCReader from '../screens/NFCReader';
+import Tipo_Documentos from '../screens/Tipo_Documentos';
+import Upload from '../screens/Upload';
+import CC from '../screens/CC';
 import TitulosValidos from '../screens/TitulosValidos';
 import TituloEmUtilizacao from '../screens/TituloEmUtilizacao';
+
 
 
 const Stack = createNativeStackNavigator();
@@ -80,6 +84,9 @@ const AppStack = () => {
             <Stack.Screen name="Cartão" component={Cartao} options={{headerStyle:{backgroundColor:'#ffb319'}}}/>
             <Stack.Screen name="Histórico" component={Historico} options={{headerStyle:{backgroundColor:'#ffb319'}}}/>
             <Stack.Screen name="Meus Bilhetes" component={Bilhetes_User} options={{headerStyle:{backgroundColor:'#ffb319'}}}/>
+            <Stack.Screen name="Tipo de Documento" component={Tipo_Documentos} options={{headerStyle:{backgroundColor:'#ffb319'}}}/>
+            <Stack.Screen name="Tipo de Upload" component={Upload} options={{headerStyle:{backgroundColor:'#ffb319'}}}/>
+            <Stack.Screen name="Cartão de Cidadão" component={CC} options={{headerStyle:{backgroundColor:'#ffb319'}}}/>
             <Stack.Screen name="Escolha o título" component={TitulosValidos} options={{headerStyle:{backgroundColor:'#ffb319'}}}/>
             <Stack.Screen name="Título em utilização" component={TituloEmUtilizacao} options={{headerStyle:{backgroundColor:'#ffb319'}, headerBackVisible:false}}/>
             <Stack.Screen name="Perfil" component={Tabs} options={{headerShown: false}}/>
