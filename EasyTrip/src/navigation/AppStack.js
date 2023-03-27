@@ -29,6 +29,8 @@ import Upload from '../screens/Upload';
 import CC from '../screens/CC';
 import TitulosValidos from '../screens/TitulosValidos';
 import TituloEmUtilizacao from '../screens/TituloEmUtilizacao';
+import DetalhesTitulo from '../screens/DetalhesTitulo';
+import Zapping from '../screens/Zapping';
 
 
 
@@ -95,6 +97,8 @@ const AppStack = () => {
             <Stack.Screen name="Cartão de Cidadão" component={CC} options={{headerStyle:{backgroundColor:'#ffb319'}}}/>
             <Stack.Screen name="Escolha o título" component={TitulosValidos} options={{headerStyle:{backgroundColor:'#ffb319'}}}/>
             <Stack.Screen name="Título em utilização" component={TituloEmUtilizacao} options={{headerStyle:{backgroundColor:'#ffb319'}, headerBackVisible:false}}/>
+            <Stack.Screen name="Detalhes" component={DetalhesTitulo} options={{headerStyle:{backgroundColor:'#ffb319'}}}/>
+            <Stack.Screen name="Zapping" component={Zapping} options={{headerStyle:{backgroundColor:'#ffb319'}}}/>
             <Stack.Screen name="Perfil" component={Tabs} options={{headerShown: false}}/>
         </Stack.Navigator>
     );

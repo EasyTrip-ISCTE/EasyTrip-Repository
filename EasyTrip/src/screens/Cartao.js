@@ -9,11 +9,13 @@ function Cartao({navigation}) {
     const [passe, setPasse] = useState("");
     const [bilhetes, setBilhetes] = useState("");
     const [cartaoData, setCartaoData] = useState(null);
+    const [valorZapping, setValorZapping] = useState(null);
 
     const {user} = useContext(AuthContext);
 
     let listaPasse = [];
     let listaBilhetes = [];
+    let valorZappingaux;
 
     const queryPasse = async() =>{ 
         firestore()
@@ -58,10 +60,21 @@ function Cartao({navigation}) {
         })
     }
 
+    const getZapping = async() => {
+        await firestore().collection("zapping").doc(user.uid).get().then((documentSnapshot) => {
+            if(documentSnapshot.exists) {
+                console.log('Cartao Data: ', documentSnapshot.data());
+                valorZappingaux = documentSnapshot.data()["Valor"]
+                setValorZapping(documentSnapshot.data()["Valor"]);
+            }
+        })
+    }
+
     useEffect(() => {
         
         queryPasse();
         queryBilhetes();
+        getZapping();
 
     }, [])
 
@@ -89,14 +102,14 @@ function Cartao({navigation}) {
                     </TouchableOpacity>
 
                    
-                    <View style={styles.view}>
+                    <TouchableOpacity style={styles.view} onPress={() => navigation.navigate("Zapping")}>
                         <ImageBackground source={require("../assets/PasseEasyTrip.png")} style={styles.viewBackground}>
                             <Text style={styles.text1}>Zapping</Text>
                             <View style={styles.text2View}>
-                                <Text style={styles.text2}>Saldo: 3€</Text> 
+                                <Text style={styles.text2}>Saldo: {valorZapping}€</Text> 
                             </View>  
                         </ImageBackground>
-                    </View>
+                    </TouchableOpacity>
                     
 
                     <TouchableOpacity style={styles.view} onPress={() => navigation.navigate("Meus Bilhetes")}>
