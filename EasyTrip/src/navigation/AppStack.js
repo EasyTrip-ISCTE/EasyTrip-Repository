@@ -1,6 +1,7 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import {Image , StyleSheet} from 'react-native';
 
 import Perfil from '../screens/Perfil';
 import Definicoes from '../screens/Definicoes';
@@ -56,10 +57,15 @@ function Tabs(){
         tabBarStyle:{backgroundColor:"#a7cedf"}
     
       })}>
-        <Tab.Screen name="Home" component={Perfil} options={{headerStyle:{backgroundColor:'#ffb319'}}}/>
-        <Tab.Screen name="NFCReader" component={NFCReader} options={{headerStyle:{backgroundColor:'#ffb319'}}}/>
-        <Tab.Screen name="Serviços" component={Servicos} options={{headerStyle:{backgroundColor:'#ffb319'}}}/>
-        <Tab.Screen name="Definições" component={Definicoes} options={{headerStyle:{backgroundColor:'#ffb319'}}}/>
+        
+        <Tab.Screen name="Home" component={Perfil} options={ {headerStyle:{backgroundColor:'#ffb319'}, tabBarIcon:() => {
+              return (<Image style={styles.image} source={require("../assets/inicio.png")}/>);},}}/>
+        <Tab.Screen name="NFCReader" component={NFCReader} options={ {headerStyle:{backgroundColor:'#ffb319'}, tabBarIcon:() => {
+              return (<Image style={styles.image} source={require("../assets/nfc.png")}/>);},}}/>
+        <Tab.Screen name="Serviços" component={Servicos} options={ {headerStyle:{backgroundColor:'#ffb319'}, tabBarIcon:() => {
+              return (<Image style={styles.image} source={require("../assets/serviços.png")}/>);},}}/>
+        <Tab.Screen name="Definições" component={Definicoes} options={ {headerStyle:{backgroundColor:'#ffb319'}, tabBarIcon:() => {
+              return (<Image style={styles.image} source={require("../assets/definicoes.png")}/>);},}}/>
       </Tab.Navigator>
     )
   }
@@ -95,3 +101,12 @@ const AppStack = () => {
 }
 
 export default AppStack;
+
+const styles = StyleSheet.create({
+
+  image:{
+    resizeMode:'contain',
+    width:30,
+  },
+
+})

@@ -39,7 +39,7 @@ function Definicoes({navigation}) {
             <View>
                 <TouchableOpacity onPress={() => logout()}> 
                     <Image style={styles.buttonLogOut} source={require("../assets/logout1.png")}/>
-                    <Text style={styles.text}>LogOut</Text>
+                    <Text style={styles.text}>Terminar Sessão</Text>
                 </TouchableOpacity>
             </View>
         </View>
