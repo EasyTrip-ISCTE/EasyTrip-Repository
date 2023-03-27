@@ -102,6 +102,32 @@ function Perfil( {navigation} ) {
         })
     }
 
+    if(cartaoData){
+        return (
+            <Root>
+            <ImageBackground style={styles.background} source={require("../assets/perfil2.jpg")}>
+                    <View style={styles.inicioView}>
+                        <Text style={styles.titleText}>Bem-vindo, {userData ? userData.PrimeiroNome : ""}</Text>
+                    </View>
+                    <TouchableOpacity onPress={() => navigation.navigate("Cartão")}>
+                        <View style={styles.cartaoView}>
+                            <Image style={styles.image} source={require("../assets/PasseEasyTrip.png")}></Image>
+                        </View>
+                    </TouchableOpacity>
+                    <View style={styles.informacaoView}>    
+                        <Text style={styles.text}>Número do Cartão: {cartaoData ? cartaoData.Numero : ""}</Text>
+                        <Text style={styles.text}>Válido até: {cartaoData ? cartaoData.Validade : ""}</Text>
+                    </View>
+                    <View style={styles.buttonView}>
+                        <TouchableOpacity style={styles.button} onPress={getTituloEmUtilizacao}>
+                            <Text style={styles.buttonText}>Ver título em utilização</Text>
+                        </TouchableOpacity>
+                    </View>
+            </ImageBackground>
+        </Root>  
+        )
+    }
+
     return (
     <Root>
         <ImageBackground style={styles.background} source={require("../assets/perfil2.jpg")}>

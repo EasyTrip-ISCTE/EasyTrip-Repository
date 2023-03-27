@@ -8,30 +8,18 @@ import firestore from '@react-native-firebase/firestore';
 function Bilhetes({navigation}) {
 
     const [localidades, setLocalidades] = useState([]);
-    const [selected, setSelected] = useState("");
+   
     const [isPasse, setIsPasse] = useState(false);
+    const [isZapping, setZapping] = useState(false);
     
     const [origem, setOrigem]=useState("");
     const [destino, setDestino]=useState("");
-
-
     const [idOrigem, setIdOrigem] = useState("");
     const [idDestino, setIdDestino] = useState("");
 
-    const [valorOrigem, setValorOrigem] = useState("");
-    const [valorDestino, setValorDestino] = useState("");
-    const [valor, setValor] = useState("");
-    const [preco, setPreco] = useState("");
 
-    const collectionZonas = firestore().collection("zonas");
 
-    const [bilhete, setBilhete] = useState([
-        {
-            Origem: "",
-            Destino: "",
-            Valor: ""
-        }
-    ]);
+   
 
     useEffect(() => {
         let listaLocalidades = [];
@@ -51,16 +39,18 @@ function Bilhetes({navigation}) {
         console.log("Origem:",origem, "---->","Destino:",destino);
         let valorOrigemAux = 0;
         let valorDestinoAux = 0;
+        let idOrigemAux;
+        let idDestinoAux;
 
         //Origem   
         await firestore().collection("localidades").where("Nome", "==", origem).get().then(query => {
             query.forEach(element => {
-                setIdOrigem(element.data()["idZona"]);
+                idOrigemAux = element.data()["idZona"];
                 console.log("IdOrigem:",element.data()["idZona"]);
                 console.log("STOP 1");
         
                 firestore().collection("zonas").doc(element.data()["idZona"]).get().then(element1 =>{
-                    setValorOrigem(element1.data()["Valor"])
+                    //setValorOrigem(element1.data()["Valor"])
                     valorOrigemAux = element1.data()["Valor"];
                 })
                 console.log("STOP 2");
@@ -70,7 +60,7 @@ function Bilhetes({navigation}) {
             //Destino
             firestore().collection("localidades").where("Nome", "==", destino).get().then(query => {
                 query.forEach(element => {
-                    setIdDestino(element.data()["idZona"]);
+                    idDestinoAux = element.data()["idZona"];
                     console.log("IdDestino:",element.data()["idZona"]);
                     console.log("STOP 3")
         
@@ -78,7 +68,7 @@ function Bilhetes({navigation}) {
                     console.log("STOP 4")
         
                     firestore().collection("zonas").doc(element.data()["idZona"]).get().then(element1 =>{
-                        setValorDestino(element1.data()["Valor"])
+                        //setValorDestino(element1.data()["Valor"])
                         valorDestinoAux = element1.data()["Valor"];
                         console.log("AQUIIIII",valorDestinoAux);
                     }).then(() => {
@@ -88,11 +78,11 @@ function Bilhetes({navigation}) {
                         console.log(valorOrigemAux,"----->",valorDestinoAux)
                         let valoraux = 0;
                         if(parseInt(valorOrigemAux) >= parseInt(valorDestinoAux)){
-                            setValor(parseInt(valorOrigemAux)-parseInt(valorDestinoAux));
+                            //setValor(parseInt(valorOrigemAux)-parseInt(valorDestinoAux));
                             valoraux = parseInt(valorOrigemAux)-parseInt(valorDestinoAux);
                         }
                         else{
-                            setValor(parseInt(valorDestinoAux)-parseInt(valorOrigemAux));
+                            //setValor(parseInt(valorDestinoAux)-parseInt(valorOrigemAux));
                             valoraux = parseInt(valorDestinoAux)-parseInt(valorOrigemAux)
                         }
             
@@ -106,19 +96,13 @@ function Bilhetes({navigation}) {
 
                         let precoaux = 0;
                         firestore().collection("zonas_preco").doc(valoraux.toString()).get().then(element3 =>{
-                            setPreco(element3.data()["Preco"]);
+                            //setPreco(element3.data()["Preco"]);
                             precoaux = element3.data()["Preco"];
                             console.log(element3.data());
             
                             console.log("Preço:",precoaux)
 
-                            console.log({
-                                Origem: origem,
-                                Destino: destino,
-                                Valor: precoaux
-                            });
-
-                            navigation.navigate("Pagamento", {titulo:{Origem: origem,Destino: destino,Valor: precoaux}, IsPasse: isPasse});
+                            navigation.navigate("Pagamento", {titulo:{Origem: origem,Destino: destino,Valor: precoaux, idOrigem: idOrigemAux, idDestino: idDestinoAux}, IsPasse: isPasse, IsZapping: isZapping});
                         })
                     })
                 })

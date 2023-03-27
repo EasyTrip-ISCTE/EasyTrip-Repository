@@ -4,6 +4,8 @@ import { Popup, Root } from 'react-native-popup-confirm-toast';
 import firestore from '@react-native-firebase/firestore';
 
 import { AuthContext } from '../components/AuthProvider';
+import moment from 'moment';
+import 'moment/locale/pt';
 
 function MBWAY({route,navigation}) {
 
@@ -13,34 +15,54 @@ function MBWAY({route,navigation}) {
     const {user} = useContext(AuthContext);
 
     const [passe, setPasse] = useState("");
-    const[numeroTelemovel, setNumeroTelemovel] = useState('')
+    const[numeroTelemovel, setNumeroTelemovel] = useState('');
+
+    const data = moment().locale("pt").format("DD");
+    console.log("Data", data);
+    console.log(route.params);
+
     
     function comprarTitulo(){
 
-        //console.log("AQUIIIII");
-        //const cartaoUserRef = doc(db, "cartaoUser", auth.currentUser.uid);
-
-        console.log("MBWAY",route.params.IsPasse);
-        //verificar se já existe um passe e se não existir posso escolher um tipo de passe para comprar
         let listaPasse = [];
+        let passeValidadeaux;
 
-        firestore().collection("cartaoUser").doc(user.uid).get().then(docSnap => {
+        firestore().collection("cartaoUser").doc(user.uid).get().then( async docSnap => {
         
             if(docSnap.exists){
             
                 if(route.params.IsPasse){//passes
-                    firestore().collection("passesUser").where("idUser", "==", user.uid).get().then(query => {
+                    console.log("É Passe")
+                    firestore().collection("passesUser").where("idUser", "==", user.uid).get().then(query  => {
                         query.forEach((doc) => {
                             listaPasse.push({...doc.data(), id:doc.id});
+                            
+                            passeValidadeaux = doc.data()["Validade"];
+                            
                         })
                         setPasse(listaPasse[0]);
                         if(listaPasse[0] == undefined){//se nao tiver passe, cria passe
-                            firestore().collection("passesUser").add({
-                                Tipo: route.params.titulo.titulo.Tipo,
-                                Validade: "Dezembro",
-                                idPasse: Number(route.params.titulo.titulo.id),
-                                idUser: user.uid,
-                            })
+                            if(moment().day() <= 25){
+                                firestore().collection("passesUser").add({
+                                    Tipo: route.params.titulo.titulo.Tipo,
+                                    Validade: moment().locale("pt").add(0, "month").format("MMMM"),
+                                    idPasse: Number(route.params.titulo.titulo.id),
+                                    idUser: user.uid,
+                                    DataCompra: moment().locale("pt").format("D/MMM/YYYY"),
+                                    HoraCompra: moment().locale("pt").format("h:mm A"),
+                                })
+                            }
+                            else{
+                                firestore().collection("passesUser").add({
+                                    Tipo: route.params.titulo.titulo.Tipo,
+                                    Validade: moment().locale("pt").add(1, "month").format("MMMM"),
+                                    idPasse: Number(route.params.titulo.titulo.id),
+                                    idUser: user.uid,
+                                    DataCompra: moment().locale("pt").format("D/MMM/YYYY"),
+                                    HoraCompra: moment().locale("pt").format("h:mm A"),
+                                })
+                            }
+                            
                             {Popup.show({
                                 type: 'success',
                                 title: 'Passe criado com sucesso',
@@ -53,12 +75,23 @@ function MBWAY({route,navigation}) {
                             return;
                         } else {//se ja tiver faz update e altera tipo de passe
                             if(listaPasse[0].Tipo != route.params.titulo.titulo.Tipo) {//se o passe que tem for diferente do que pretende
-                                firestore().collection("passesUser").doc(listaPasse[0].id).set({
-                                    Tipo: route.params.titulo.titulo.Tipo,
-                                    Validade: "Dezembro",
-                                    idPasse: Number(route.params.titulo.titulo.id),
-                                    idUser: user.uid,
-                                })
+                                console.log("O passe que quero comprar é diferente do que já tenho")
+                                if(moment().day() <= 25){
+                                    firestore().collection("passesUser").doc(listaPasse[0].id).set({
+                                        Tipo: route.params.titulo.titulo.Tipo,
+                                        Validade: moment().locale("pt").add(0, "month").format("MMMM"),
+                                        idPasse: Number(route.params.titulo.titulo.id),
+                                        idUser: user.uid,
+                                    })
+                                }
+                                else{
+                                    firestore().collection("passesUser").doc(listaPasse[0].id).set({
+                                        Tipo: route.params.titulo.titulo.Tipo,
+                                        Validade: moment().locale("pt").add(1, "month").format("MMMM"),
+                                        idPasse: Number(route.params.titulo.titulo.id),
+                                        idUser: user.uid,
+                                    })
+                                }
                                 {Popup.show({
                                     type: 'success',
                                     title: 'Alteração confirmada',
@@ -70,28 +103,128 @@ function MBWAY({route,navigation}) {
                                 
                                 console.log("Alterei o meu passe");
                             } else {//se o passe que tem for igual do que pretende
-                                {Popup.show({
-                                    type: 'danger',
-                                    title: 'ERRO: Já possui o passe selecionado',
-                                    textBody: 'Selecione outro tipo de passe',
-                                    buttonText: 'Fechar',
-                                    okButtonStyle:{ backgroundColor: '#ffb319'},
-                                    callback: () => Popup.hide()
-                                })}
-                                console.log("Não foi possível alterar o passe porque já o tem");
+                                console.log("O passe é igual ao que já tenho")
+                                if(passeValidadeaux == moment().locale("pt").format("MMMM")){//passe igual e validade é igual ao mês atual(está carregado)
+                                    console.log("Está carregado para o mês onde me encontro")
+                                    if(moment().locale("pt").format("DD") < 25){
+                                        console.log("É antes de dia 25 e o passe está carregado para o mês onde me encontro")
+                                        {Popup.show({
+                                            type: 'danger',
+                                            title: 'ERRO: Já possui o passe selecionado carregado para este mês',
+                                            textBody: 'Espere até dia 25 para carregar para o próximo mês',
+                                            buttonText: 'Fechar',
+                                            okButtonStyle:{ backgroundColor: '#ffb319'},
+                                            callback: () => Popup.hide()
+                                        })}
+                                    }
+                                    else{
+                                        console.log("Tenho o passe carregado para o mês onde me encontro mas já é depois de dia 25")
+                                    firestore().collection("passesUser").doc(listaPasse[0].id).update({
+                                        Validade: moment().locale("pt").add(1, "month").format("MMMM")
+                                    })
+                                        {Popup.show({
+                                            type: 'success',
+                                            title: 'Carregamento efetuado',
+                                            textBody: 'Passe carregado com sucesso',
+                                            buttonText: 'Fechar',
+                                            okButtonStyle:{ backgroundColor: '#ffb319'},
+                                            callback: () => Popup.hide()
+                                        })}
+                                    }
+                                }
+                                else{//o passe não está carregado para este mês
+                                  
+                                    if(listaPasse[0].Validade == moment().locale("pt").add(1, "month").format("MMMM")){
+                                        console.log("O passe não está carregado para o mês onde me encontro mas sim para o proximo mes já")
+                                        {Popup.show({
+                                            type: 'danger',
+                                            title: 'ERRO: Não foi possível carregar o passe',
+                                            textBody: 'Já possui o passe selecionado carregado para o próximo mês',
+                                            buttonText: 'Fechar',
+                                            okButtonStyle:{ backgroundColor: '#ffb319'},
+                                            callback: () => Popup.hide()
+                                        })}
+                                        return;
+                                    }
+                                    if(moment().moment().day() < 25 ){ //se o passe é igual mas não está carregado para este mês e é antes de dia 25
+                                        firestore().collection("passesUser").doc(listaPasse[0].id).update({
+                                            Validade: moment().locale("pt").add(0, "month").format("MMMM")
+                                        })
+                                        {Popup.show({
+                                            type: 'success',
+                                            title: 'Carregamento efetuado',
+                                            textBody: 'Passe carregado com sucesso',
+                                            buttonText: 'Fechar',
+                                            okButtonStyle:{ backgroundColor: '#ffb319'},
+                                            callback: () => Popup.hide()
+                                        })} 
+                                    }
+                                    else{
+                                        firestore().collection("passesUser").doc(listaPasse[0].id).update({
+                                            Validade: moment().locale("pt").add(1, "month").format("MMMM")
+                                        })
+                                            {Popup.show({
+                                                type: 'success',
+                                                title: 'Carregamento efetuado',
+                                                textBody: 'Passe carregado com sucesso',
+                                                buttonText: 'Fechar',
+                                                okButtonStyle:{ backgroundColor: '#ffb319'},
+                                                callback: () => Popup.hide()
+                                            })}
+                                    }
+                                }
                             }
                         }
                     })
+                    return;
+                }
+            
+                //zapping
+                else if(route.params.IsZapping){
+                    console.log("É Zapping");
+                    
+                    await firestore().collection("zapping").doc(user.uid).get().then( docSnapshot => {
+                        console.log("Passei por aqui")
+                        if(docSnapshot.exists){
+                            console.log("Entrei porque existe um doc");
+                            const aux = docSnapshot.data()["Valor"];
+                            firestore().collection("zapping").doc(user.uid).update({
+                                Valor: aux + route.params.ValorZapping
+                            })
+                        }
+                        else{ 
+                            console.log("Entrei e vou criar zapping") 
+                            const valorAux = route.params.ValorZapping; 
+                            firestore().collection("zapping").doc(user.uid).set({
+                                Valor: valorAux
+                            })
+                        }
+                        {Popup.show({
+                            type: 'success',
+                            title: 'Compra confirmada',
+                            textBody: 'O seu zapping foi carregado com sucesso',
+                            buttonText: 'Fechar',
+                            okButtonStyle:{ backgroundColor: '#ffb319'},
+                            callback: () => Popup.hide()
+                        })}
+                    })
                 }
                 //bilhetes
-                else{
+                else {
+                    console.log("É bilhete")
                     console.log("Estou aqui e vou para", route.params.titulo.titulo.Destino);
                     firestore().collection("bilhetesUser").add({
                         idUser: user.uid,
                         Origem: route.params.titulo.titulo.Origem,
                         Destino:  route.params.titulo.titulo.Destino,
                         Valor: route.params.titulo.titulo.Valor,
-                        Estado : "Valido"
+                        Estado : "Valido",
+                        DataCompra: moment().locale("pt").format("D/MMM/YYYY"),
+                        HoraCompra: moment().locale("pt").format("h:mm A"),
+                        DataUtilizacao: "",
+                        HoraUtilizacao: "",
+                        idOrigem: route.params.titulo.titulo.idOrigem ,
+                        idDestino: route.params.titulo.titulo.idDestino
                     })
                     console.log("Comprei bilhete")
 
@@ -126,7 +259,7 @@ function MBWAY({route,navigation}) {
             <Image style={styles.image_mb} source={require("../assets/mbway.png")}/>
             
             <View style={styles.inputCampos} >
-                <Text>Montante a depositar: {route.params.titulo.titulo.Valor}€</Text>
+                <Text>Montante a depositar: {route.params.IsZapping ? route.params.ValorZapping : route.params.titulo.titulo.Valor}€</Text>
             </View>
 
             <View style={styles.inputCampos}>    

@@ -29,7 +29,7 @@ function Informacoes({route, navigation}) {
                 <Text style={styles.text}>Mais informações:</Text>
                 <Text style={styles.textInfo}>{route.params.item.Informacao}</Text>
             </View>
-            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Pagamento", {titulo:titulo, IsPasse: route.params.IsPasse})}>
+            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Pagamento", {titulo:titulo, IsPasse: route.params.IsPasse, IsZapping: route.params.IsZapping})}>
                 <Text style={styles.buttonText}>Escolher método de pagamento</Text>
             </TouchableOpacity>
         </View>

@@ -10,7 +10,7 @@ function Pagamento({route, navigation}) {
     return (
         <View style={styles.container}>
             <Text style={styles.text}>Escolha a sua forma de pagamento</Text>
-            <TouchableOpacity onPress={() => navigation.navigate("MBWAY", {titulo:titulo, IsPasse: route.params.IsPasse})}>
+            <TouchableOpacity onPress={() => navigation.navigate("MBWAY", {titulo:titulo, IsPasse: route.params.IsPasse, IsZapping: route.params.IsZapping, ValorZapping: route.params.ValorZapping})}>
                 <Image style={styles.image_mb} source={require("../assets/mbway.png")}/>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => navigation.navigate("MB", {titulo})}>

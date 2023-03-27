@@ -12,6 +12,10 @@ function Servicos({navigation}) {
                 <Image style={styles.image_card} source={require("../assets/PasseEasyTrip.png")}/>
                 <Text style={styles.text}>Passe</Text>
             </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate("Zapping")}>
+                <Image style={styles.image_card} source={require("../assets/PasseEasyTrip.png")}/>
+                <Text style={styles.text}>Zapping</Text>
+            </TouchableOpacity>
         </View>
     );
 }
@@ -22,17 +26,17 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "space-between",
         padding: 5,
-        margin: 70,
+        margin: 50,
     },
 
     image_ticket:{
-        height:140,
+        height:120,
         resizeMode:'contain',
         alignSelf:'center',
     },
 
     image_card:{
-        height:150,
+        height:130,
         resizeMode:'contain',
         alignSelf:'center',
         

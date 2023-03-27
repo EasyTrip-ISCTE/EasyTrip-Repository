@@ -7,6 +7,7 @@ function Passes({navigation}) {
 
     const [passes, setPasses] = useState([]);
     const [isPasse, setIsPasse] = useState(true);
+    const [isZapping, setZapping] = useState(false);
     
     useEffect(() => {
         let listaPasses = [];
@@ -31,7 +32,7 @@ function Passes({navigation}) {
                 showsVerticalScrollIndicator={false}
                 renderItem = { ({item}) => 
                     <View style={styles.view}>
-                        <TouchableOpacity onPress={() => navigation.navigate("Informações", {item:item, IsPasse :isPasse})} style={styles.button}>
+                        <TouchableOpacity onPress={() => navigation.navigate("Informações", {item:item, IsPasse: isPasse, IsZapping: isZapping})} style={styles.button}>
                             <Text style={styles.title}>{item.Tipo}</Text>
                             <View style={styles.content}>
                                 <Text style={styles.text}>{item.Periodicidade}</Text>

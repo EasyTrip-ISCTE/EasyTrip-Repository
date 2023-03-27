@@ -4,6 +4,8 @@ import firestore from '@react-native-firebase/firestore';
 import  {Popup, Root}  from 'react-native-popup-confirm-toast';
 import NfcManager, {NfcTech} from 'react-native-nfc-manager';
 import AndroidPrompt from './AndroidPrompt';
+import moment from 'moment';
+import 'moment/locale/pt';
 
 import { AuthContext } from '../components/AuthProvider';
 
@@ -12,6 +14,7 @@ function TituloEmUtilizacao({route, navigation}) {
     const {user} = useContext(AuthContext);
     const titulo = route.params.titulo;    
     const promptRef = useRef();
+
 
     console.log("TituloEmUtilização(id):",route.params.tituloId);
 
@@ -38,6 +41,10 @@ function TituloEmUtilizacao({route, navigation}) {
     const usarTituloSair = async(tagLida) =>{
         let destino;
         let idZonaDestino;
+        if(route.params.isZapping || route.params.isPasse){
+            navigation.navigate("Home");
+            return;
+        }
 
         await firestore()
                 .collection("localidades")
@@ -52,9 +59,11 @@ function TituloEmUtilizacao({route, navigation}) {
                         }
                     })
 
-                }).then(()=>{
+                }).then(() => {
                     firestore().collection("bilhetesUser").doc(route.params.tituloId).update({
                         Estado : "Utilizado",
+                        DataUtilizacao: moment().locale("pt").format("D/MMM/YYYY"),
+                        HoraUtilizacao: moment().locale("pt").format("h:mm A"),
                     
                     }).then(()=>{
                         navigation.navigate("Home")
@@ -71,7 +80,7 @@ function TituloEmUtilizacao({route, navigation}) {
                 })
         }
 
-    if(titulo){
+    if(titulo && route.params.isBilhete){
         return (
             <View>
                 <View style={styles.view}>
@@ -81,6 +90,27 @@ function TituloEmUtilizacao({route, navigation}) {
                         <View style={styles.content}>
                             <Text style={styles.text}>{titulo.Valor}€</Text>
                             <Text style={styles.text}>{titulo.Estado}</Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
+                <TouchableOpacity style={styles.button} onPress={() => {readNdef(), promptRef.current.setVisible(true)}}>
+                    <Text>Ler NFC</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button} onPress={() => {navigation.navigate("Home")}}>
+                    <Text>Voltar ao Perfil</Text>
+                </TouchableOpacity>
+                <AndroidPrompt ref={promptRef}/>
+            </View>
+        )
+    }
+    else if(titulo && route.params.isZapping){
+        return (
+            <View>
+                <View style={styles.view}>
+                    <TouchableOpacity style={styles.button1} >
+                        <Text style={styles.title}>Zapping</Text>
+                        <View style={styles.content}>
+                            <Text style={styles.text}>Saldo disponivel: {titulo.Valor}€</Text>
                         </View>
                     </TouchableOpacity>
                 </View>

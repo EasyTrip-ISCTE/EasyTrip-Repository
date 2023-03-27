@@ -22,6 +22,8 @@ function NFCReader({navigation}) {
         let origem;
         let idZonaOrigem;
         listaBilhetes = [];
+        let zapping;
+        let passeAux;
 
         firestore().collection("bilhetesUser").where("idUser", "==", user.uid).where("Estado", "==", "Em utilização").get().then(async querySnapshot =>{
             console.log("Está vazia:",querySnapshot.empty)
@@ -41,13 +43,27 @@ function NFCReader({navigation}) {
                 
                 }).then(async ()=>{
                     
-                    await firestore().collection("bilhetesUser").where("idUser", "==", user.uid).where("Origem", "==", origem).where("Estado", "==", "Valido").get().then(query => {
+                    await firestore().collection("bilhetesUser").where("idUser", "==", user.uid).where("idOrigem", "==", idZonaOrigem).where("Estado", "==", "Valido").get().then(query => {
                         query.forEach((doc1) => {
                             listaBilhetes.push({...doc1.data(), id:doc1.id});
                         })
+                    }).then(async () => {
+                        await firestore().collection("zapping").doc(user.uid).get().then(doc => {
+                            if(doc.exists){
+                                zapping = doc.data();
+                            }
+                        }).then(async () => {
+                            await firestore().collection("passesUser").doc(user.uid).get().then(doc => {
+                                if(doc.exists){
+                                    if(doc.data()["Tipo"] == "Navengante Metropolitano"){
+                                        passeAux = doc.data();
+                                    }
+                                }
+                            })
+                        }).then(()=>{
+                            navigation.navigate("Escolha o título", {titulos:listaBilhetes, zapping: zapping, passe:passeAux})
+                        })
                     })
-                }).then(()=>{
-                    navigation.navigate("Escolha o título", {titulos:listaBilhetes})
                 })
             }
 
