@@ -7,11 +7,11 @@ const Tipo_Documentos = ({navigation}) => {
     return (
         <View>
             <TouchableOpacity style={styles.buttonD} onPress={() => navigation.navigate("Tipo de Upload", {aux: "sub23"})}>
-                <Image style={styles.image_foto} source={require("../assets/foto.png")}/>
+                <Image style={styles.image_foto} source={require("../assets/documento.png")}/>
                 <Text style={styles.text_foto}>Passe Sub-23</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.buttonD} onPress={() => navigation.navigate("Tipo de Upload", {aux: "idoso"})}>
-                <Image style={styles.image_foto} source={require("../assets/foto.png")}/>
+                <Image style={styles.image_foto} source={require("../assets/documento.png")}/>
                 <Text style={styles.text_foto}>Idoso</Text>
             </TouchableOpacity>
         </View>
@@ -31,20 +31,23 @@ const styles = StyleSheet.create({
         color: "black",
         fontWeight: 'bold',
         fontSize: 20,
-        marginTop:-20,
+        marginTop:-100,
     },
     buttonD:{
         alignSelf:'center',
         alignItems:'center',
-        marginTop:50,
-        marginBottom:10,
+        marginTop:30,
+        backgroundColor:'#a7cedf',
+        borderRadius:20,
+        width:300,
+        height:100,
     },
     image_foto:{
         resizeMode:'contain',
-        width:100,
+        width:50,
         alignSelf:'center',
         alignItems:'center',
-        marginTop:-50,
+        marginTop:-90,
     },
 
 })    

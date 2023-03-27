@@ -10,7 +10,7 @@ import Passes from '../screens/Passes';
 import Dados_Pessoais from '../screens/Dados_Pessoais';
 import Carregar_Documentos from '../screens/Carregar_Documentos';
 import Verificar_Email from '../screens/Verificar_Email';
-import Contactos from '../screens/Contactos';
+import Apoio_Cliente from '../screens/Apoio_Cliente';
 import Pagamento from '../screens/Pagamento';
 import MBWAY from '../screens/MBWAY';
 import MB from '../screens/MB';
@@ -72,14 +72,14 @@ const AppStack = () => {
             <Stack.Screen name="Dados Pessoais" component={Dados_Pessoais} options={{headerStyle:{backgroundColor:'#ffb319'}}}/>
             <Stack.Screen name="Validar Documentos" component={Carregar_Documentos} options={{headerStyle:{backgroundColor:'#ffb319'}}}/>
             <Stack.Screen name="Verificar Email" component={Verificar_Email} options={{headerStyle:{backgroundColor:'#ffb319'}}}/>
-            <Stack.Screen name="Contactos" component={Contactos} options={{headerStyle:{backgroundColor:'#ffb319'}}}/>
+            <Stack.Screen name="Apoio ao Cliente" component={Apoio_Cliente} options={{headerStyle:{backgroundColor:'#ffb319'}}}/>
             <Stack.Screen name="Pagamento" component={Pagamento} options={{headerStyle:{backgroundColor:'#ffb319'}}}/>
             <Stack.Screen name="MBWAY" component={MBWAY} options={{headerStyle:{backgroundColor:'#ffb319'}, headerBackVisible:false}}/>
             <Stack.Screen name="MB" component={MB} options={{headerStyle:{backgroundColor:'#ffb319'}, headerBackVisible:false}}/>
             <Stack.Screen name="VISA" component={VISA} options={{headerStyle:{backgroundColor:'#ffb319'}, headerBackVisible:false}}/>
             <Stack.Screen name="PAYPAL" component={PAYPAL} options={{headerStyle:{backgroundColor:'#ffb319'}, headerBackVisible:false}}/>
             <Stack.Screen name="Notificacoes" component={Notificacoes} options={{headerStyle:{backgroundColor:'#ffb319'}}}/>
-            <Stack.Screen name="Ajuda" component={Ajuda} options={{headerStyle:{backgroundColor:'#ffb319'}}}/>
+            <Stack.Screen name="Perguntas Frequentes" component={Ajuda} options={{headerStyle:{backgroundColor:'#ffb319'}}}/>
             <Stack.Screen name="Informações" component={Informacoes} options={{headerStyle:{backgroundColor:'#ffb319'}}}/>
             <Stack.Screen name="Cartão" component={Cartao} options={{headerStyle:{backgroundColor:'#ffb319'}}}/>
             <Stack.Screen name="Histórico" component={Historico} options={{headerStyle:{backgroundColor:'#ffb319'}}}/>
