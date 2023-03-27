@@ -108,25 +108,29 @@ const Upload = ({navigation, route}) => {
 
 
     return (
-        <View>
-            <TouchableOpacity style={styles.buttonD} onPress={pickFiles_Foto}>
-                <Image style={styles.image_foto} source={require("../assets/foto.png")}/>
-                <Text style={styles.textFoto}>Tirar Foto</Text>
-            </TouchableOpacity>
+        <View style={styles.container}>
 
-            <TouchableOpacity style={styles.buttonUpload} onPress={() => uploadImages_Foto(route.params.aux)}>
-                <Text style={styles.buttonText}>Upload</Text>
-            </TouchableOpacity>
-            <Text style={styles.textnamefoto}>{name_Foto}</Text>
+                <TouchableOpacity style={styles.button_foto} onPress={pickFiles_Foto}>
+                    <Image style={styles.image_foto} source={require("../assets/foto.png")}/>
+                    <Text style={styles.text_foto}>Tirar Foto</Text>
+                    <Text style={styles.textnamefoto}>{name_Foto}</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.buttonUpload_foto} onPress={() => uploadImages_Foto(route.params.aux)}>
+                    <Text style={styles.buttonText}>Upload</Text>
+                </TouchableOpacity>
+                
+            
 
-            <TouchableOpacity style={styles.buttonD} onPress={pickFiles_OD}>
-                    <Image style={styles.image_document} source={require("../assets/foto_documento.png")}/>
-                    <Text style={styles.textOD}>Galeria</Text>
-            </TouchableOpacity>
-            <Text style={styles.textnamefoto}>{name_OD}</Text>
-            <TouchableOpacity style={styles.buttonUpload} onPress={() => uploadImages_OD(route.params.aux)}>
-                <Text style={styles.buttonText}>Upload</Text>
-            </TouchableOpacity>
+            
+                <TouchableOpacity style={styles.button_galeria} onPress={pickFiles_OD}>
+                        <Image style={styles.image_galeria} source={require("../assets/galeria.png")}/>
+                        <Text style={styles.text_galeria}>Galeria</Text>
+                        <Text style={styles.textnamefoto}>{name_OD}</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.buttonUpload_galeria} onPress={() => uploadImages_OD(route.params.aux)}>
+                    <Text style={styles.buttonText}>Upload</Text>
+                </TouchableOpacity>
+        
 
         </View>
     );
@@ -136,136 +140,94 @@ export default Upload;
 
 const styles = StyleSheet.create({
 
-    modal:{
-        //justifyContent: 'flex-end',
-        margin:0,
-        backgroundColor:"#ffb319",
-
-    },
-    buttons:{
-        backgroundColor:'white',
-        flexDirection: 'row',
-        borderTopRightRadius:30,
-        borderTopLeftRadius:30,
-    },
-    button:{
-        flex:1,
-        justifyContent:'center',
-        alignItems:'center',
-    },
-
     container: {
         alignItems: "center",
         justifyContent: 'center',
     },
-    textnamefoto:{
-        alignItems: "center",
-        textAlign:'center',
-    },
-    inicialText:{
-        color: "black",
-        fontWeight: 'bold',
-        fontSize: 10,
-    },
-    buttonCC:{
-
-    },
-    image_cc:{
-        resizeMode:'center',
-        width:100,
+    
+    button_foto:{
+        resizeMode:'contain',
         alignSelf:'center',
         alignItems:'center',
+        backgroundColor:"#a7cedf",
+        width:300,
+        height:200,
+        borderRadius:15,
+        marginTop:100,
+    },
+    image_foto:{
+        resizeMode:'contain',
+        width:50,
+        alignSelf:'center',
+        alignItems:'center',
+        marginTop:-30,
+    },
+    text_foto:{
+        textAlign:'center',
+        color: "black",
+        fontWeight: 'bold',
+        fontSize: 20,
+        marginTop:-55,
+    },
+    buttonUpload_galeria:{
+        justifyContent:'center',
+        alignSelf:'center',
+        alignItems:'center',
+        backgroundColor:"#ffb319",
+        borderRadius:10,
+        width:100,
+        height:40,
+        marginHorizontal:10,
         marginTop:-50,
-        
-     },
-     textCC:{
-        textAlign:'center',
-        color: "black",
-        fontWeight: 'bold',
-        fontSize: 20,
-        marginTop:-130,
-        
     },
-    buttomscc:{
-        flexDirection:"row",
+    buttonUpload_foto:{
+        justifyContent:'center',
         alignSelf:'center',
         alignItems:'center',
-        //marginBottom:50,
-    },
-    buttonccfrente:{
-        alignSelf:'center',
-        alignItems:'center',
-        backgroundColor:"#a7cedf",
+        backgroundColor:"#ffb319",
         borderRadius:10,
         width:100,
         height:40,
         marginHorizontal:10,
-        marginTop:10,
-    },
-    buttonccverso:{
-        alignSelf:'center',
-        alignItems:'center',
-        backgroundColor:"#a7cedf",
-        borderRadius:10,
-        width:100,
-        height:40,
-        marginHorizontal:10,
-        marginTop:10,
-    },
-    textOD:{
-        textAlign:'center',
-        color: "black",
-        fontWeight: 'bold',
-        fontSize: 20,
-        marginTop:-20,
-    },
-    textFoto:{
-        textAlign:'center',
-        color: "black",
-        fontWeight: 'bold',
-        fontSize: 20,
-        marginTop:-20,
-    },
-    buttonD:{
-        alignSelf:'center',
-        alignItems:'center',
-        marginTop:50,
-        marginBottom:10,
-        
+        marginTop:-50,
     },
     buttonText:{
         textAlign:'center',
         color: "black",
         fontWeight: 'bold',
-        fontSize: 20,
-        marginTop:5,
+        fontSize: 15,
     },
-    
-    
-    image_document:{
+    textnamefoto:{
+        alignItems: "center",
+        textAlign:'center',
+        color: "black",
+        fontStyle:'italic',
+        fontSize: 12,
+        marginTop:10,
+    },
+    button_galeria:{
         resizeMode:'contain',
-        width:100,
-        alignSelf:'center',
-        alignItems:'center',
-        marginTop:50,
-    },
-    image_foto:{
-        resizeMode:'contain',
-        width:100,
-        alignSelf:'center',
-        alignItems:'center',
-        marginTop:-50,
-    },
-    buttonUpload:{
-        justifyContent:'center',
         alignSelf:'center',
         alignItems:'center',
         backgroundColor:"#a7cedf",
-        borderRadius:10,
-        width:100,
-        height:40,
-        marginHorizontal:10,
-        marginTop:10,
-    }
+        width:300,
+        height:200,
+        borderRadius:15,
+        marginTop:60,
+        },
+    image_galeria:{
+        resizeMode:'contain',
+        width:50,
+        alignSelf:'center',
+        alignItems:'center',
+        marginTop:-210,
+    },
+    text_galeria:{
+        textAlign:'center',
+        color: "black",
+        fontWeight: 'bold',
+        fontSize: 20,
+        marginTop:-230,
+    },
 
 })    
