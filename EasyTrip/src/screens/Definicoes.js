@@ -28,18 +28,18 @@ function Definicoes({navigation}) {
                     <Text style={styles.text}>Notificações</Text>
                 </TouchableOpacity>
             
-                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Ajuda")}>
-                    <Text style={styles.text}>Ajuda</Text>
+                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Perguntas Frequentes")}>
+                    <Text style={styles.text}>Perguntas Frequentes</Text>
                 </TouchableOpacity>
            
-                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Contactos")}> 
-                    <Text style={styles.text}>Contactos</Text>
+                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Apoio ao Cliente")}> 
+                    <Text style={styles.text}>Apoio ao Cliente</Text>
                 </TouchableOpacity>
             </View>
             <View>
                 <TouchableOpacity onPress={() => logout()}> 
                     <Image style={styles.buttonLogOut} source={require("../assets/logout1.png")}/>
-                    <Text style={styles.text}>LogOut</Text>
+                    <Text style={styles.text}>Terminar Sessão</Text>
                 </TouchableOpacity>
             </View>
         </View>

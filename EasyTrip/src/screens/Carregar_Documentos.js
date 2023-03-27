@@ -1,75 +1,26 @@
-import React, { useState, useCallback, useContext } from 'react';
-import { SafeAreaView, StyleSheet, ScrollView, View, Text, StatusBar, Button, ImageBackground, Image, TouchableOpacity } from 'react-native';
-import {firebase} from '../../firebase';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
-import DocumentPicker from 'react-native-document-picker';
+import React, { useState, useContext } from 'react';
+import { StyleSheet, View, Text, Image, TouchableOpacity} from 'react-native';
+import {Popup} from 'react-native-popup-confirm-toast';
+import { AuthContext } from '../components/AuthProvider';
+
 
 const Carregar_Documentos = ({navigation}) => {
-    const {image, setImage} = useState(null);
-    const {uploading, setUploading} = useState(false);
 
-    const pickImage = async () => {
-        //let result = await launchImageLibrary();
-        //console.log(result);
-
-        try{
-        const result = await DocumentPicker.pick({type: [DocumentPicker.types.pdf]});
-        console.log(result)
-
-        }catch(err){
-            if(DocumentPicker.isCancel(err))
-                console.log("User Cancel",err)
-            else
-                console.log(err)
-        }
-        const source = {uri: result.uri};
-        console.log(source);
-        setImage(source);
-    };
-
-   /* const uploadImage = async () => {
-
-        setUploading(true);
-        const  response = await fetch(image.uri)
-        const blob = await response.blob();
-        const filename = image.uri.substring(image.uri.lastIndexOf('/')+1);
-        var ref = firebase.storage().ref().child(filename).put(blob);
-
-        try{
-            await ref;
-        }catch (e){
-            console.log(e);
-        }
-        setUploading(false);
-        Alert.alert(
-            "Foto carregada!"
-        );
-        setImage(null);
-    };*/
- 
     return (
-        <SafeAreaView>
-            <View style={styles.container}>
-                <TouchableOpacity style={styles.buttonCC} onPress={pickImage}>
-                    <Image style={styles.image_cc} source={require("../assets/foto_documento.png")}/>
-                    <Text style={styles.buttonText}>Cartão de Cidadão</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.buttonUpload} onPress={''}>
-                    <Text style={styles.buttonText}>Upload</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.buttonD} onPress={''}>
-                    <Image style={styles.image_document} source={require("../assets/foto_documento.png")}/>
-                    <Text style={styles.buttonText}>Outros Documentos</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.buttonUpload} onPress={''}>
-                    <Text style={styles.buttonText}>Upload</Text>
-                </TouchableOpacity>
-            </View>
-        </SafeAreaView>
-    );
+        <View style={styles.container}>
+            
+            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Cartão de Cidadão")}>
+                <Image style={styles.image_cc} source={require("../assets/cc.png")}/>
+                <Text style={styles.text_cc}>Cartão de Cidadão</Text>
+            </TouchableOpacity>
+            
+            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Tipo de Documento")}>
+                <Image style={styles.image_pasta} source={require("../assets/pasta.png")}/>
+                <Text style={styles.text_document}>Outros Documentos</Text>
+            </TouchableOpacity>
+            
+        </View>
+      );
 }
 
 export default Carregar_Documentos;
@@ -78,42 +29,45 @@ const styles = StyleSheet.create({
 
     container: {
         alignItems: "center",
-    
-
+        justifyContent: 'center',
     },
-    buttonCC:{
-
+    button:{
         alignSelf:'center',
         alignItems:'center',
-        marginBottom:10,
-        marginTop:50,
+        marginTop:30,
+        backgroundColor:'#a7cedf',
+        borderRadius:20,
+        width:300,
+        height:100,
     },
-    buttonD:{
+    image_pasta:{
+        resizeMode:'contain',
         alignSelf:'center',
         alignItems:'center',
-        marginTop:70,
-        marginBottom:10,
+        width:80,
+        marginTop:-220,
+
     },
-    buttonText:{
+   
+    image_cc:{
+        resizeMode:'center',
+        width:80,
+        alignSelf:'center',
+        alignItems:'center',
+        marginTop:-140,
+     },
+     text_cc:{
         textAlign:'center',
         color: "black",
         fontWeight: 'bold',
         fontSize: 20,
-        marginTop:5,
+        marginTop:-150,
     },
-    image_foto_documento:{
-       width:100,
-       
+    text_document:{
+        textAlign:'center',
+        color: "black",
+        fontWeight: 'bold',
+        fontSize: 20,
+        marginTop:-225,
     },
-    image_document:{
-        
-       
-    },
-    buttonUpload:{
-        backgroundColor:'rgb(0, 255, 0)',
-        borderRadius:10,
-        width:100,
-        height:40,
-    }
-
-})    
+})  
