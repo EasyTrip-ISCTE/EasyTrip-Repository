@@ -62,7 +62,7 @@ function Tabs(){
         
         <Tab.Screen name="Home" component={Perfil} options={ {headerStyle:{backgroundColor:'#ffb319'}, tabBarIcon:() => {
               return (<Image style={styles.image} source={require("../assets/inicio.png")}/>);},}}/>
-        <Tab.Screen name="NFCReader" component={NFCReader} options={ {headerStyle:{backgroundColor:'#ffb319'}, tabBarIcon:() => {
+        <Tab.Screen name="Ler NFC" component={NFCReader} options={ {headerStyle:{backgroundColor:'#ffb319'}, tabBarIcon:() => {
               return (<Image style={styles.image} source={require("../assets/nfc.png")}/>);},}}/>
         <Tab.Screen name="Serviços" component={Servicos} options={ {headerStyle:{backgroundColor:'#ffb319'}, tabBarIcon:() => {
               return (<Image style={styles.image} source={require("../assets/serviços.png")}/>);},}}/>
