@@ -15,7 +15,7 @@ function TituloEmUtilizacao({route, navigation}) {
     const titulo = route.params.titulo;    
     const promptRef = useRef();
 
-
+    console.log("O que chega aqui é",route.params)
     console.log("TituloEmUtilização(id):",route.params.tituloId);
 
     async function readNdef() {
@@ -80,7 +80,29 @@ function TituloEmUtilizacao({route, navigation}) {
                 })
         }
 
-    if(titulo && route.params.isBilhete){
+    if(titulo && route.params.isZapping){
+        return (
+            <View>
+                <View style={styles.view}>
+                    <TouchableOpacity style={styles.button1} >
+                        <Text style={styles.title}>Zapping</Text>
+                        <View style={styles.content}>
+                            <Text style={styles.text}>Saldo disponivel: {titulo.Valor}€</Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
+                <TouchableOpacity style={styles.button} onPress={() => {readNdef(), promptRef.current.setVisible(true)}}>
+                    <Text>Ler NFC</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button} onPress={() => {navigation.navigate("Home")}}>
+                    <Text>Voltar ao Perfil</Text>
+                </TouchableOpacity>
+                <AndroidPrompt ref={promptRef}/>
+            </View>
+        )
+    }
+    else if(titulo){
+        
         return (
             <View>
                 <View style={styles.view}>
@@ -103,31 +125,10 @@ function TituloEmUtilizacao({route, navigation}) {
             </View>
         )
     }
-    else if(titulo && route.params.isZapping){
-        return (
-            <View>
-                <View style={styles.view}>
-                    <TouchableOpacity style={styles.button1} >
-                        <Text style={styles.title}>Zapping</Text>
-                        <View style={styles.content}>
-                            <Text style={styles.text}>Saldo disponivel: {titulo.Valor}€</Text>
-                        </View>
-                    </TouchableOpacity>
-                </View>
-                <TouchableOpacity style={styles.button} onPress={() => {readNdef(), promptRef.current.setVisible(true)}}>
-                    <Text>Ler NFC</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={() => {navigation.navigate("Home")}}>
-                    <Text>Voltar ao Perfil</Text>
-                </TouchableOpacity>
-                <AndroidPrompt ref={promptRef}/>
-            </View>
-        )
-    }
     else{
         return(
-            <View>
-            <Text>Não existe bilhete nenhum em utilização</Text>
+            <View style={styles.view1}>
+            <Text style={styles.text}>Não existe título nenhum em utilização</Text>
             <TouchableOpacity style={styles.button} onPress={() => {navigation.navigate("Home")}}>
                     <Text>Voltar ao Perfil</Text>
             </TouchableOpacity>
@@ -168,6 +169,9 @@ const styles = StyleSheet.create({
 
     text:{
         fontSize:16,
+        margin:10,
+        justifyContent:"center",
+        alignSelf:"center"
         
     
     },
@@ -185,6 +189,9 @@ const styles = StyleSheet.create({
         marginTop:5,
         marginBottom:10
     },
+    view1:{
+        justifyContent:"space-between"
+    }
 
 })
 

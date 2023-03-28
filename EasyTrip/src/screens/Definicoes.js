@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
 
     buttonLogOut:{
         marginStart:10,
-        height:60,
+        height:45,
         resizeMode:'contain',
         alignSelf:'center',
     }

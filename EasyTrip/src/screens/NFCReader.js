@@ -53,15 +53,16 @@ function NFCReader({navigation}) {
                                 zapping = doc.data();
                             }
                         }).then(async () => {
-                            await firestore().collection("passesUser").doc(user.uid).get().then(doc => {
-                                if(doc.exists){
-                                    if(doc.data()["Tipo"] == "Navengante Metropolitano"){
-                                        passeAux = doc.data();
+                            await firestore().collection("passesUser").where("idUser","==" ,user.uid).get().then(query => {
+                                query.forEach(doc2 => {
+                                    if(doc2.exists){
+                                        passeAux = doc2.data();
                                     }
-                                }
+                                });
+                                
+                            }).then(()=>{
+                                navigation.navigate("Escolha o título", {titulos:listaBilhetes, zapping: zapping, passe:passeAux})
                             })
-                        }).then(()=>{
-                            navigation.navigate("Escolha o título", {titulos:listaBilhetes, zapping: zapping, passe:passeAux})
                         })
                     })
                 })
@@ -125,12 +126,13 @@ function NFCReader({navigation}) {
     } 
     return(
         <View style={styles.container}>
-            <Text >Carregue no butão para usar o NFC</Text>
+            <View style={styles.view}>
+            <Text style={styles.text}>Carregue no butão para usar o NFC</Text>
             <TouchableOpacity style={styles.button} onPress={() => {readNdef() ,promptRef.current.setVisible(true)}}>
                     <Text>Ler NFC</Text>
                 </TouchableOpacity>
                 <AndroidPrompt ref={promptRef}/>
-                
+            </View>
         </View>
     )
 }
@@ -140,8 +142,8 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: "space-between",
-        padding: 5,
-        margin: 0,
+        padding: 15,
+        margin: 20,
     }, 
     button:{
         backgroundColor: "#ffb319",
@@ -152,15 +154,20 @@ const styles = StyleSheet.create({
 
     },
     view:{
-        width: 250,
-        height: 160,
+        justifyContent:"space-between",
+        alignItems: "center",
         alignSelf:"center",
-        backgroundColor: "#FFF",
         borderRadius: 10,
         marginRight:10,
         marginLeft:10,
+        height:"50%",
+        width:"90%",
+        marginTop: 100
         
     },
+    text:{
+
+    }
   
 });
 

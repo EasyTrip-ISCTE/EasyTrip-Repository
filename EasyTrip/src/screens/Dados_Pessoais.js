@@ -1,26 +1,54 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { View, Text, Button, Image, StyleSheet, KeyboardAvoidingView, TextInput, TouchableOpacity } from 'react-native';
+import auth from "@react-native-firebase/auth";
+import firestore from '@react-native-firebase/firestore';
 
+import { AuthContext } from '../components/AuthProvider';
 
 
 function Dados_Pessoais( {navigation} ) {
+
+    const {user} = useContext(AuthContext);
 
     const[nome, setNome] = useState('')
     const[apelido, setApelido] = useState('')
     const[morada, setMorada] = useState('')
     const[email, setEmail] = useState('')
     const[password, setPassword] = useState('')
+    const[nif, setNif] = useState('')
+    const[cartaocidadao, setCartaoCidadao] = useState('')
 
-    const docRef = doc(db, "users", auth.currentUser.uid);   
-        
-    getDoc(docRef)
-        .then((doc) => {
-            setNome(doc.data()['PrimeiroNome']);
-            setApelido(doc.data()['Apelido']);
-            setMorada(doc.data()['Morada']);
-            setEmail(auth.currentUser.email);
-        })
+    useEffect(() => {
+        obterDados()    
+    }, [])    
+
+    const obterDados = () => {
+        firestore().collection("users").doc(user.uid).get().then(doc => {
+            if(doc.exists){
+                setNome(doc.data()['PrimeiroNome']);
+                setApelido(doc.data()['Apelido']);
+                setMorada(doc.data()['Morada']);
+                setEmail(user.email);
+                setCartaoCidadao(doc.data()['CartaoCidadao'])
+                setNif(doc.data()["Nif"])
+            }
+        }) 
+    }
+      
+  
+    const atualizarDados = async() => {
+        await firestore().collection("users").doc(user.uid).update({
+            PrimeiroNome: nome,
+            Apelido: apelido,
+            Morada: morada,
+            CartaoCidadao: cartaocidadao,
+            Nif: nif
     
+        });
+        navigation.navigate("Definições");
+        
+
+    }
 
 
     return (
@@ -48,21 +76,20 @@ function Dados_Pessoais( {navigation} ) {
                     style={styles.input}
                 />
                 <TextInput 
+                    placeholder='NIF' 
+                    value={nif} 
+                    onChangeText={text => setNif(text)} 
+                    style={styles.input}
+                />
+                <TextInput 
                     placeholder='Email' 
                     value={email} 
                     onChangeText={text => setEmail(text)} 
                     style={styles.input}
                 />
-                <TextInput 
-                    placeholder='Nova password' 
-                    value={password} 
-                    onChangeText={text => setPassword(text)} 
-                    style={styles.input}
-                    secureTextEntry
-                />
             </View>
             <View style={styles.buttonView}>
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity style={styles.button} onPress={() => atualizarDados()}>
                     <Text style={styles.buttonText}>Alterar Dados</Text>
                 </TouchableOpacity>
             </View>

@@ -87,14 +87,14 @@ function Cartao({navigation}) {
                 <View style={styles.titleView}>
                     <Text style={styles.text}>Títulos</Text>
                     <TouchableOpacity onPress={() => navigation.navigate("Serviços")}>
-                        <Text style={styles.text1}>(+) Novo Título</Text>
+                        <Text style={styles.text4}>(+) Novo Título</Text>
                     </TouchableOpacity>
                 </View>
                 <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
 
                     <TouchableOpacity style={styles.view}>
                         <ImageBackground source={require("../assets/PasseEasyTrip.png")} style={styles.viewBackground}>
-                            <Text style={styles.text1}>{passe? passe['Tipo'] : "Não possui nenhum passe"}</Text>
+                            <Text style={styles.text3}>{passe? passe['Tipo'] : "Não possui nenhum passe"}</Text>
                             <View style={styles.text2View}>    
                                 <Text style={styles.text2}>{passe? passe['Validade'] : null}</Text>
                             </View> 
@@ -104,7 +104,7 @@ function Cartao({navigation}) {
                    
                     <TouchableOpacity style={styles.view} onPress={() => navigation.navigate("Zapping")}>
                         <ImageBackground source={require("../assets/PasseEasyTrip.png")} style={styles.viewBackground}>
-                            <Text style={styles.text1}>Zapping</Text>
+                            <Text style={styles.text3}>Zapping</Text>
                             <View style={styles.text2View}>
                                 <Text style={styles.text2}>Saldo: {valorZapping}€</Text> 
                             </View>  
@@ -124,7 +124,7 @@ function Cartao({navigation}) {
             <TouchableOpacity style={styles.historicoView} onPress={() => navigation.navigate("Histórico")}>
                 <Text style={styles.text}>Histórico de Compras</Text> 
             </TouchableOpacity>
-            <TouchableOpacity style={styles.historicoView} onPress={() => navigation.navigate("Ajuda")}>
+            <TouchableOpacity style={styles.historicoView} onPress={() => navigation.navigate("Perguntas Frequentes")}>
                 <Text style={styles.text} >Perguntas Frequentes</Text> 
             </TouchableOpacity>
             
@@ -181,17 +181,31 @@ const styles = StyleSheet.create({
         fontSize: 20,
         padding:8,
         fontWeight: 'bold',
+        color:"black",
     },
     text1:{
+        fontSize: 19,
+        padding:12,
+        //fontWeight: 'bold',
+        color:"black",
+    },
+    text4:{
         fontSize: 19,
         padding:12,
         fontWeight: 'bold',
         color:"black",
     },
+    text3:{
+        fontSize: 19,
+        padding:12,
+        //fontWeight: 'bold',
+        color:"white",
+    },
     text2:{
         fontSize: 17,
         padding:12,
         fontWeight: 'bold',
+        color: "black"
         
     },
     text2View:{

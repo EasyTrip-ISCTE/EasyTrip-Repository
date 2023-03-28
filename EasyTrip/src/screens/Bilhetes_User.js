@@ -5,7 +5,7 @@ import firestore from '@react-native-firebase/firestore';
 
 import { AuthContext } from '../components/AuthProvider';
 
-function Bilhetes_User() {
+function Bilhetes_User({navigation, route}) {
 
     const {user} = useContext(AuthContext);
     const [bilhetes, setBilhetes] = useState([]);
@@ -36,7 +36,7 @@ function Bilhetes_User() {
                 showsVerticalScrollIndicator={false}
                 renderItem = { ({item}) => 
                     <View style={styles.view}>
-                        <TouchableOpacity style={styles.button}>
+                        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Detalhes", {titulo: item})}>
                             <Text style={styles.title}>Origem: {item.Origem}</Text>
                             <Text style={styles.title}>Destino: {item.Destino}</Text>
                             <View style={styles.content}>

@@ -11,6 +11,9 @@ function TitulosValidos({route, navigation}) {
     const {user} = useContext(AuthContext);
     const [titulos,setTitulos] = useState([]);
     const [tituloUtilizacao, setTituloUtilizacao] = useState("");
+    const [isBilhete, setIsBilhete] = useState(false);
+    const [isZapping, setIsZapping] = useState(false);
+    const [isPasse, setIsPasse] = useState(false);
     
     
     useEffect(() => {
@@ -21,7 +24,8 @@ function TitulosValidos({route, navigation}) {
     const usarTitulo = (tituloIdaux) =>{
         console.log("Titulos Validos" ,titulos);
         let tituloUtilizar;
-
+        setIsBilhete(true);
+        const aux = true;
         //verificar se ja existe um bilhete em utilização e enviar para a pagina bilhetes em utilização
                         
             
@@ -35,7 +39,7 @@ function TitulosValidos({route, navigation}) {
                         tituloUtilizar = doc2.data();
                         console.log("Aquiiii",doc2.data())
                     }
-                    navigation.navigate("Título em utilização", {titulo : doc2.data(), tituloId: tituloIdaux, isBilhete: true, isPasse: false, isZapping: false})
+                    navigation.navigate("Título em utilização", {titulo : doc2.data(), tituloId: tituloIdaux, isBilhete: aux, isPasse: isPasse, isZapping: isZapping})
                 })
             }).then(() =>{
                 console.log("Fiz update do estado do bilhete")    
@@ -51,20 +55,31 @@ function TitulosValidos({route, navigation}) {
     }
     
     const usarZapping = () => {
-
-        const saldo = route.params.zapping.Valor - 1.90;
+        setIsZapping(true)
+        const aux = true;
+        
         firestore().collection("zapping").doc(user.uid).update({
-            Valor: saldo
+            Valor: route.params.zapping.Valor - 1.9
         }).then(()=>{
             firestore().collection("zapping").doc(user.uid).get().then(doc => {
                 if(doc.exists){
-                    navigation.navigate("Título em utilização", {titulo: doc.data(), isBilhete: false, isPasse: false, isZapping: true})
+                    navigation.navigate("Título em utilização", {titulo: doc.data(), isBilhete: isBilhete, isPasse: isPasse, isZapping: aux})
                 }
             })
-          
         })
+    }
 
-        
+    const usarPasse = () => {
+      /*  const aux = true;
+        firestore().collection("passesUser").where("idUser","==",user.uid).get().then(query => {
+            query.forEach(doc => {
+                if(doc.exists){
+                    navigation.navigate("Título em utilização", {titulo: doc.data(), isBilhete: isBilhete, isPasse: aux, isZapping: isZapping})
+                }    
+            });
+            
+        })*/
+        navigation.navigate("Home")
     }
 
     if(!titulos){
@@ -74,17 +89,17 @@ function TitulosValidos({route, navigation}) {
         return (
             <View style={styles.container}>
                 <View style={styles.view}>
-                    <TouchableOpacity style={styles.button}>
+                    <TouchableOpacity style={styles.button} onPress={() => usarPasse()}>
                         <Text style={styles.title}>Passe</Text>
-                        <Text style={styles.text}></Text>
-                        <Text style={styles.text}></Text>
+                        <Text style={styles.text}>Tipo: {route.params.passe ? route.params.passe.Tipo : ""}</Text>
+                        <Text style={styles.text1}>Válido até {route.params.passe ? route.params.passe.Validade : ""}</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={styles.view}>
                     <TouchableOpacity style={styles.button} onPress={() => usarZapping()}>
                         <Text style={styles.title}>Zapping</Text>
                         <Text style={styles.text}>Saldo Disponível: {route.params.zapping ? route.params.zapping.Valor : ""}€</Text>
-                        <Text style={styles.text}>Custo da viagem: 1,90€</Text>
+                        <Text style={styles.text1}>Custo da viagem: 1,90€</Text>
                     </TouchableOpacity>
                 </View>
                 <Text style={styles.bilhetes}>Bilhetes</Text>
@@ -97,8 +112,8 @@ function TitulosValidos({route, navigation}) {
                 
                     <View style={styles.view}> 
                         <TouchableOpacity style={styles.button} onPress={() => usarTitulo(item.id)}>
-                            <Text style={styles.title}>Origem: {item.Origem}</Text>
-                            <Text style={styles.title}>Destino: {item.Destino}</Text>
+                            <Text style={styles.text}>Origem: {item.Origem}</Text>
+                            <Text style={styles.text}>Destino: {item.Destino}</Text>
                             <View style={styles.content}>
                                 <Text style={styles.text}>{item.Valor}€</Text>
                                 <Text style={styles.text}>{item.Estado}</Text>
@@ -135,7 +150,7 @@ const styles = StyleSheet.create({
     },
 
     title:{
-        fontSize:17,
+        fontSize:20,
         fontWeight: "bold", 
     
     },
@@ -143,6 +158,10 @@ const styles = StyleSheet.create({
     text:{
         fontSize:16,
         
+    },
+    text1:{
+        alignSelf:"flex-end",
+        fontSize:15
     },
     text2:{
         fontSize:10,
