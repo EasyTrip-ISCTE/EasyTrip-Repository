@@ -111,7 +111,7 @@ function Perfil( {navigation} ) {
                     </View>
                     <TouchableOpacity onPress={() => navigation.navigate("Cartão")}>
                         <View style={styles.cartaoView}>
-                            <Image style={styles.image} source={require("../assets/PasseEasyTrip.png")}></Image>
+                            <Image style={styles.image} source={require("../assets/PasseEasyTrip1.png")}></Image>
                         </View>
                     </TouchableOpacity>
                     <View style={styles.informacaoView}>    
@@ -136,7 +136,8 @@ function Perfil( {navigation} ) {
                 </View>
                 <TouchableOpacity onPress={() => navigation.navigate("Cartão")}>
                     <View style={styles.cartaoView}>
-                        <Image style={styles.image} source={require("../assets/PasseEasyTrip.png")}></Image>
+                        
+                        <Image style={styles.image} source={require("../assets/PasseEasyTrip1.png")}></Image>
                     </View>
                 </TouchableOpacity>
                 <View style={styles.informacaoView}>    

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { View, TouchableOpacity, Text, StyleSheet, LayoutAnimation, Platform, UIManager, SafeAreaView} from "react-native";
+import { View, TouchableOpacity, Text,Image, StyleSheet, LayoutAnimation, Platform, UIManager, SafeAreaView} from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
 export default class Accordian extends Component{
@@ -21,7 +21,7 @@ export default class Accordian extends Component{
     return (
        <View>
             <TouchableOpacity ref={this.accordian} style={styles.row} onPress={()=>this.toggleExpand()}>
-                <Text style={[styles.title, styles.font]}>{this.props.title}</Text>
+                <Text style={styles.title}>{this.props.title}</Text>
                 <Icon name={this.state.expanded ? 'keyboard-arrow-up' : 'keyboard-arrow-down'} size={30} color={"gray"} />
             </TouchableOpacity>
             <View style={styles.parentHr}/>
@@ -31,7 +31,6 @@ export default class Accordian extends Component{
                     <Text>{this.props.data}</Text>    
                 </View>
             }
-            
        </View>
     )
   }
@@ -48,7 +47,9 @@ const styles = StyleSheet.create({
         fontSize: 14,
         fontWeight:'bold',
         color: "black",
+        width:'95%',
     },
+    
     row:{
         flexDirection: 'row',
         width:"100%",
@@ -56,7 +57,7 @@ const styles = StyleSheet.create({
         height:56,
         paddingLeft:18,
         paddingRight:32,
-        alignItems:'center',
+       alignItems:'center',
         backgroundColor: "white",
     },
     parentHr:{
