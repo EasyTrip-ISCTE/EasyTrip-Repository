@@ -120,7 +120,7 @@ function NFCReader({navigation}) {
     }else if(!hasNfc){
         return (
             <View style={styles.container}>
-                <Text style={styles.text}>Your device doesn't support NFC</Text>  
+                <Text style={styles.text}>O seu dispositivo nao suporta NFC!</Text>  
             </View>
         );
     } 

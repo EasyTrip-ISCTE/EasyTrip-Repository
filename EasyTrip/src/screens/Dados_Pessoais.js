@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { View, Text, Button, Image, StyleSheet, KeyboardAvoidingView, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, Button, Image, StyleSheet, KeyboardAvoidingView, TextInput, TouchableOpacity, Alert } from 'react-native';
 import auth from "@react-native-firebase/auth";
 import firestore from '@react-native-firebase/firestore';
+import { Popup, Root } from 'react-native-popup-confirm-toast';
 
 import { AuthContext } from '../components/AuthProvider';
 
@@ -37,17 +38,19 @@ function Dados_Pessoais( {navigation} ) {
       
   
     const atualizarDados = async() => {
-        await firestore().collection("users").doc(user.uid).update({
-            PrimeiroNome: nome,
-            Apelido: apelido,
-            Morada: morada,
-            CartaoCidadao: cartaocidadao,
-            Nif: nif
-    
-        });
-        navigation.navigate("Definições");
+        try {
+            await firestore().collection("users").doc(user.uid).update({
+                PrimeiroNome: nome,
+                Apelido: apelido,
+                Morada: morada,
+                CartaoCidadao: cartaocidadao,
+                Nif: nif
         
-
+            });
+            Alert.alert('Sucesso!','Os seus dados pessoais foram atualizados com sucesso!',[{text: 'Voltar', onPress: () => navigation.navigate("Definições")}]);
+        } catch (error) {
+            Alert.alert('Erro!','Ocorreu um erro na atualização dos dados!',[{text: 'Voltar', onPress: () => navigation.navigate("Definições")}]);
+        }
     }
 
 
