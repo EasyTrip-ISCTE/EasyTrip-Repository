@@ -43,7 +43,7 @@ function Tabs(){
         screenOptions={({route}) => ({
           TabBarIcon: ({focused, size, colour}) => {
             let iconName; 
-            if(route.name === "Home"){ 
+            if(route.name === "Início"){ 
               //iconName = focused ? 'ios-home': 'ios-home-outline' ;
             } else if(route.name === "NFCReader"){ 
               //iconName = focused ? 'add-circle-sharp': 'add-circle-outline' ;

@@ -24,10 +24,6 @@ function Definicoes({navigation}) {
                     <Text style={styles.text}>Verificar E-mail</Text>
                 </TouchableOpacity>
             
-                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Notificacoes")}>
-                    <Text style={styles.text}>Notificações</Text>
-                </TouchableOpacity>
-            
                 <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Perguntas Frequentes")}>
                     <Text style={styles.text}>Perguntas Frequentes</Text>
                 </TouchableOpacity>
@@ -54,7 +50,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     text:{
-      fontSize:18,
+      fontSize:16,
       alignSelf:'center',
     },
 
@@ -64,15 +60,15 @@ const styles = StyleSheet.create({
         borderWidth:1,
         backgroundColor: "#EBEBEB",
         width:'100%',
-        height:'12%',
+        height:'13%',
         justifyContent: 'center',
     },
 
     buttonLogOut:{
         marginStart:10,
-        height:45,
+        height:40,
         resizeMode:'contain',
         alignSelf:'center',
-        marginTop:40,
+        marginTop:70,
     }
 });

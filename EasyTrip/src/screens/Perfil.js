@@ -1,5 +1,5 @@
-import React, { useEffect, useContext} from 'react';
-import { View, Text, ImageBackground, StyleSheet, Image, TouchableOpacity} from 'react-native';
+import React, { useEffect, useContext, Component} from 'react';
+import { View, Text, ImageBackground, StyleSheet, Image, TouchableOpacity, RefreshControl} from 'react-native';
 import { useState } from 'react';
 import { Popup, Root} from 'react-native-popup-confirm-toast';
 import auth from "@react-native-firebase/auth";
@@ -7,7 +7,7 @@ import firestore from '@react-native-firebase/firestore';
 
 import { AuthContext } from '../components/AuthProvider';
 
-function Perfil( {navigation} ) {
+function Perfil ( {navigation} ) {
 
     const {user} = useContext(AuthContext);
 
@@ -18,37 +18,37 @@ function Perfil( {navigation} ) {
     const currentMonth = date.getMonth() + 1;
     const currentYear = date.getFullYear() + 2;
 
-    const getUser = async() =>{
-        const utilizador = await firestore()
+    useEffect(() => {
+        getUser()
+        getCartao()
+    }, []) 
+
+
+    const getUser= () => {
+        const utilizador = firestore()
         .collection("users")
         .doc(user.uid)
-        .get()
-        .then((documentSnapshot) => {
+        .onSnapshot((documentSnapshot) => {
             if(documentSnapshot.exists) {
                 console.log('User Data: ', documentSnapshot.data());
-                setUserData(documentSnapshot.data());
+                setUserData(documentSnapshot.data())
             }
         })
     }
 
-    const getCartao = async() =>{
-        const cartao = await firestore()
+    const getCartao = () => {
+        const cartao = firestore()
         .collection("cartaoUser")
         .doc(user.uid)
-        .get()
-        .then((documentSnapshot) => {
+        .onSnapshot((documentSnapshot) => {
             if(documentSnapshot.exists) {
                 console.log('Cartao Data: ', documentSnapshot.data());
                 setCartaoData(documentSnapshot.data());
             }
         })
-    }
-
-    useEffect(() => {
-        getUser();
-        getCartao();
         
-    }, [])    
+    }
+    
 
     const criarCartão = async() =>{
 
@@ -74,7 +74,11 @@ function Perfil( {navigation} ) {
                 firestore().collection("cartaoUser").doc(auth().currentUser.uid).set({
                     Numero: numero,
                     Validade: validade
-                });
+                }).then(()=>{
+                    firestore().collection("zapping").doc(user.uid).set({
+                        Valor: parseInt(0)
+                    })
+                })
                 {Popup.show({
                     type: 'success',
                     title: 'Cartão criado com sucesso!',
@@ -84,8 +88,8 @@ function Perfil( {navigation} ) {
                     callback: () => Popup.hide()
                     })}
                 console.log("Criei cartão")
-            }
-        }); 
+            } 
+        });
     }
 
     const getTituloEmUtilizacao = async() => {

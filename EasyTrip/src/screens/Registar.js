@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, Button, Image, StyleSheet, KeyboardAvoidingView, TextInput, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState, useContext } from 'react';
+import { View, Text, Button, Image, StyleSheet, KeyboardAvoidingView, TextInput, TouchableOpacity, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
 import auth from "@react-native-firebase/auth";
 import firestore from '@react-native-firebase/firestore';
-
+import { AuthContext } from '../components/AuthProvider';
 
 
 function Registar( {navigation} ) {
@@ -14,52 +14,37 @@ function Registar( {navigation} ) {
     const[password, setPassword] = useState('')
     const[cc, setCc] = useState('')
 
+    const { register } = useContext(AuthContext);
+
 
     const handleSingUp = () => {
-        auth()
-        .createUserWithEmailAndPassword(email, password)
-        .then(() => {
-            console.log('User account created & signed in!');
-            firestore()
-            .collection("users")
-            .doc(auth().currentUser.uid)
-            .set({
-                PrimeiroNome: nome,
-                Apelido: apelido,
-                Morada: morada,
-                CartaoCidadao: cc
+        if(nome && apelido && morada && cc && email && password){
+            register(email, password).then(()=>{
+                try{
+                    firestore()
+                    .collection("users")
+                    .doc(auth().currentUser.uid)
+                    .set({
+                        PrimeiroNome: nome,
+                        Apelido: apelido,
+                        Morada: morada,
+                        CartaoCidadao: cc
+                    })
+                }
+                catch{
+                    //Alert.alert("Erro no registo")
+                }
             })
-            .then(() => {
-                console.log('User added!');
-            });
-        })
-        .catch(error => {
-            if (error.code === 'auth/email-already-in-use') {
-                console.log('That email address is already in use!');
-            }
-            if (error.code === 'auth/invalid-email') {
-                console.log('That email address is invalid!');
-            }
-            console.error(error);
-        });
+                
+        }else{
+            Alert.alert("Erro no registo", "Por favor preencha todos os campos.")
+            //console.error("Por favor preencha todos os campos.")
+        }      
+         
+        
+            
     }
     
-    /*    createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredentials) => {
-            setDoc(doc(db,"users", userCredentials.user.uid), {
-                PrimeiroNome: nome,
-                Apelido: apelido,
-                Morada: morada,
-                CartaoCidadao: cc
-            });
-            const user = userCredentials.user;
-            console.log("Utilizador criado com sucesso", user.email);
-            navigation.navigate('Login');
-            
-        })
-        .catch(error => alert(error.message))
-    
-*/
     return (
         <KeyboardAvoidingView style={styles.container} behavior="padding">
             <View style={styles.imageView}>
@@ -76,7 +61,7 @@ function Registar( {navigation} ) {
                     placeholder='Apelido' 
                     value={apelido} 
                     onChangeText={text => setApelido(text)} 
-                    style={styles.input}
+                    style={styles.input} 
                 />
                 <TextInput 
                     placeholder='Morada' 
@@ -105,8 +90,8 @@ function Registar( {navigation} ) {
                 />
             </View>
             <View style={styles.buttonView}>
-                <TouchableOpacity onPress={ handleSingUp } style={styles.button}>
-                    <Text style={styles.buttonText}>Registar</Text>
+                <TouchableOpacity onPress={handleSingUp} style={styles.button}>
+                    <Text style={styles.buttonText}>Registar</Text> 
                 </TouchableOpacity>
             </View>
         </KeyboardAvoidingView>

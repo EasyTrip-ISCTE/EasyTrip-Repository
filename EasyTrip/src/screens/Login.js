@@ -10,6 +10,7 @@ function Login( {navigation} ) {
     
 
     const { login } = useContext(AuthContext);
+    
 
     return (
         <KeyboardAvoidingView style={styles.container} behavior="padding">
