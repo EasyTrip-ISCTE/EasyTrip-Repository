@@ -49,7 +49,7 @@ function TituloEmUtilizacao({route, navigation}) {
 
         await firestore()
                 .collection("localidades")
-                .where("idTag", "==", "4347CB8G")//colocar tagLida quando tiver mais cartões a simular estações diferentes
+                .where("idTag", "==", tagLida)//colocar tagLida quando tiver mais cartões a simular estações diferentes
                 .get()
                 .then( query => {
                     query.forEach((localidade) => {
@@ -61,15 +61,22 @@ function TituloEmUtilizacao({route, navigation}) {
                     })
 
                 }).then(() => {
-                    firestore().collection("bilhetesUser").doc(route.params.tituloId).update({
-                        Estado : "Utilizado",
-                        DataUtilizacao: moment().locale("pt").format("D/MMM/YYYY"),
-                        HoraUtilizacao: moment().locale("pt").format("h:mm A"),
+                    if(idZonaDestino == route.params.titulo.idDestino){
+                        firestore().collection("bilhetesUser").doc(route.params.tituloId).update({
+                            Estado : "Utilizado",
+                            DataUtilizacao: moment().locale("pt").format("D/MMM/YYYY"),
+                            HoraUtilizacao: moment().locale("pt").format("h:mm A"),
+                        
+                        }).then(()=>{
+                            Alert.alert("Viagem concluída", "Volte sempre!") 
+                            navigation.navigate("Início")
+                        })
+                    }
+                    else{
+                        Alert.alert("Destino incorreto","O seu bilhete tem como destino outra zona, verifique o seu bilhete.")
+                        return;
+                    }
                     
-                    }).then(()=>{
-                        Alert.alert("Viagem concluída", "Volte sempre!")
-                        navigation.navigate("Início")
-                    })
                 })
         }
 

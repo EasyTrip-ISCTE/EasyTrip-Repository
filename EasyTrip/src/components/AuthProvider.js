@@ -18,7 +18,16 @@ export const AuthProvider = ({children}) => {
                             Alert.alert("Erro no Login","Email ou palavra-passe incorretos")
                         }
                         else {
-                            await auth().signInWithEmailAndPassword(email, password);   
+                            await auth().signInWithEmailAndPassword(email, password).then(() => {
+
+                            }).catch(error => {
+                                if (error.code === 'auth/invalid-email') {
+                                    Alert.alert("Erro no Registo", "Este email não é válido")
+                                }
+                                if (error.code === 'auth/wrong-password') {
+                                    Alert.alert("Erro no Registo", "Email ou palavra-passe incorretos")
+                                }
+                            })   
                         }
                         
                     }catch (e) {
