@@ -1,5 +1,5 @@
 import React, {useContext, useRef} from 'react';
-import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { FlatList, StyleSheet, Text, TouchableOpacity, View, Alert } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import  {Popup, Root}  from 'react-native-popup-confirm-toast';
 import NfcManager, {NfcTech} from 'react-native-nfc-manager';
@@ -42,7 +42,8 @@ function TituloEmUtilizacao({route, navigation}) {
         let destino;
         let idZonaDestino;
         if(route.params.isZapping || route.params.isPasse){
-            navigation.navigate("Home");
+            Alert.alert("Viagem Concluída","Volte Sempre")
+            navigation.navigate("Início");
             return;
         }
 
@@ -66,17 +67,9 @@ function TituloEmUtilizacao({route, navigation}) {
                         HoraUtilizacao: moment().locale("pt").format("h:mm A"),
                     
                     }).then(()=>{
-                        navigation.navigate("Home")
+                        Alert.alert("Viagem concluída", "Volte sempre!")
+                        navigation.navigate("Início")
                     })
-                }).then(()=>{
-                    {Popup.show({
-                        type: 'success',
-                        title: 'Cancela aberta',
-                        textBody: 'Volte sempre',
-                        buttonText: 'Fechar',
-                        okButtonStyle:{ backgroundColor: '#ffb319'},
-                        callback: () => {Popup.hide()}
-                    })}
                 })
         }
 
@@ -87,14 +80,14 @@ function TituloEmUtilizacao({route, navigation}) {
                     <TouchableOpacity style={styles.button1} >
                         <Text style={styles.title}>Zapping</Text>
                         <View style={styles.content}>
-                            <Text style={styles.text}>Saldo disponivel: {titulo.Valor}€</Text>
+                            <Text style={styles.text}>Saldo disponivel: {titulo.Valor.toFixed(2)}€</Text>
                         </View>
                     </TouchableOpacity>
                 </View>
                 <TouchableOpacity style={styles.button} onPress={() => {readNdef(), promptRef.current.setVisible(true)}}>
                     <Text>Ler NFC</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={() => {navigation.navigate("Home")}}>
+                <TouchableOpacity style={styles.button} onPress={() => {navigation.navigate("Início")}}>
                     <Text>Voltar ao Perfil</Text>
                 </TouchableOpacity>
                 <AndroidPrompt ref={promptRef}/>
@@ -118,7 +111,7 @@ function TituloEmUtilizacao({route, navigation}) {
                 <TouchableOpacity style={styles.button} onPress={() => {readNdef(), promptRef.current.setVisible(true)}}>
                     <Text>Ler NFC</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={() => {navigation.navigate("Home")}}>
+                <TouchableOpacity style={styles.button} onPress={() => {navigation.navigate("Início")}}>
                     <Text>Voltar ao Perfil</Text>
                 </TouchableOpacity>
                 <AndroidPrompt ref={promptRef}/>
@@ -129,7 +122,7 @@ function TituloEmUtilizacao({route, navigation}) {
         return(
             <View style={styles.view1}>
             <Text style={styles.text}>Não existe título nenhum em utilização</Text>
-            <TouchableOpacity style={styles.button} onPress={() => {navigation.navigate("Home")}}>
+            <TouchableOpacity style={styles.button} onPress={() => {navigation.navigate("Início")}}>
                     <Text>Voltar ao Perfil</Text>
             </TouchableOpacity>
             </View>

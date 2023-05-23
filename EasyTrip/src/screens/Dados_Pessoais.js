@@ -14,7 +14,6 @@ function Dados_Pessoais( {navigation} ) {
     const[nome, setNome] = useState('')
     const[apelido, setApelido] = useState('')
     const[morada, setMorada] = useState('')
-    const[email, setEmail] = useState('')
     const[password, setPassword] = useState('')
     const[nif, setNif] = useState('')
     const[cartaocidadao, setCartaoCidadao] = useState('')
@@ -29,7 +28,6 @@ function Dados_Pessoais( {navigation} ) {
                 setNome(doc.data()['PrimeiroNome']);
                 setApelido(doc.data()['Apelido']);
                 setMorada(doc.data()['Morada']);
-                setEmail(user.email);
                 setCartaoCidadao(doc.data()['CartaoCidadao'])
                 setNif(doc.data()["Nif"])
             }
@@ -38,20 +36,22 @@ function Dados_Pessoais( {navigation} ) {
       
   
     const atualizarDados = async() => {
-        try {
-            await firestore().collection("users").doc(user.uid).update({
-                PrimeiroNome: nome,
-                Apelido: apelido,
-                Morada: morada,
-                CartaoCidadao: cartaocidadao,
-                Nif: nif
         
-            });
-            Alert.alert('Sucesso!','Os seus dados pessoais foram atualizados com sucesso!',[{text: 'Voltar', onPress: () => navigation.navigate("Definições")}]);
-        } catch (error) {
-            Alert.alert('Erro!','Ocorreu um erro na atualização dos dados!',[{text: 'Voltar', onPress: () => navigation.navigate("Definições")}]);
+            try {
+                await firestore().collection("users").doc(user.uid).update({
+                    PrimeiroNome: nome,
+                    Apelido: apelido,
+                    Morada: morada,
+                    CartaoCidadao: cartaocidadao,
+                    Nif: nif
+            
+                });
+                Alert.alert('Sucesso!','Os seus dados pessoais foram atualizados com sucesso!',[{text: 'Voltar', onPress: () => navigation.navigate("Definições")}]);
+            } catch (error) {
+                Alert.alert('Erro!','Ocorreu um erro na atualização dos dados!',[{text: 'Voltar', onPress: () => navigation.navigate("Definições")}]);
+            }
         }
-    }
+        
 
 
     return (
@@ -82,12 +82,6 @@ function Dados_Pessoais( {navigation} ) {
                     placeholder='NIF' 
                     value={nif} 
                     onChangeText={text => setNif(text)} 
-                    style={styles.input}
-                />
-                <TextInput 
-                    placeholder='Email' 
-                    value={email} 
-                    onChangeText={text => setEmail(text)} 
                     style={styles.input}
                 />
             </View>

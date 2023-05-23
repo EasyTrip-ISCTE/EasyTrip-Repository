@@ -60,8 +60,8 @@ function Cartao({navigation}) {
         })
     }
 
-    const getZapping = async() => {
-        await firestore().collection("zapping").doc(user.uid).get().then((documentSnapshot) => {
+    const getZapping = () => {
+        firestore().collection("zapping").doc(user.uid).onSnapshot((documentSnapshot) => {
             if(documentSnapshot.exists) {
                 console.log('Cartao Data: ', documentSnapshot.data());
                 valorZappingaux = documentSnapshot.data()["Valor"]
@@ -106,7 +106,7 @@ function Cartao({navigation}) {
                         <ImageBackground source={require("../assets/PasseEasyTrip.png")} style={styles.viewBackground}>
                             <Text style={styles.text3}>Zapping</Text>
                             <View style={styles.text2View}>
-                                <Text style={styles.text2}>Saldo: {valorZapping}€</Text> 
+                                <Text style={styles.text2}>Saldo: {valorZapping? valorZapping.toFixed(2) : null}€</Text> 
                             </View>  
                         </ImageBackground>
                     </TouchableOpacity>

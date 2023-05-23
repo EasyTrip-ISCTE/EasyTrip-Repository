@@ -28,7 +28,7 @@ function Zapping({navigation, route}) {
 
     return (
         <View style={styles.view}>
-            <Text style={styles.text}>O seu saldo: {zapping}€</Text>
+            <Text style={styles.text}>O seu saldo: {zapping ? zapping.toFixed(2) : null}€</Text>
             
             <View style={styles.view2}>
             <Text style={styles.text}>Deseja carregar zapping?</Text>

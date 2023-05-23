@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Popup, Root } from 'react-native-popup-confirm-toast';
 import firestore from '@react-native-firebase/firestore';
 import moment from 'moment';
@@ -57,29 +57,39 @@ function TitulosValidos({route, navigation}) {
     const usarZapping = () => {
         setIsZapping(true)
         const aux = true;
+        if(route.params.zapping){
+            if(route.params.zapping.Valor >= 1.9){
+                firestore().collection("zapping").doc(user.uid).update({
+                    Valor: route.params.zapping.Valor - 1.9
+                }).then(()=>{
+                    firestore().collection("zapping").doc(user.uid).get().then(doc => {
+                        if(doc.exists){
+                            Alert.alert("Boa viagem", "Título utilizado com sucesso!")
+                            navigation.navigate("Título em utilização", {titulo: doc.data(), isBilhete: isBilhete, isPasse: isPasse, isZapping: aux})
+                        }
+                    })
+                })
+            }
+            else{
+                Alert.alert("Não foi possível utilizar o Zapping", "Saldo insuficiente, por favor carregue o seu saldo zapping")
+            }
+        }
+        else{
+            Alert.alert("Não foi possível utilizar o Zapping", "Saldo insuficiente, por favor carregue o seu saldo zapping")
+        }
         
-        firestore().collection("zapping").doc(user.uid).update({
-            Valor: route.params.zapping.Valor - 1.9
-        }).then(()=>{
-            firestore().collection("zapping").doc(user.uid).get().then(doc => {
-                if(doc.exists){
-                    navigation.navigate("Título em utilização", {titulo: doc.data(), isBilhete: isBilhete, isPasse: isPasse, isZapping: aux})
-                }
-            })
-        })
+        
     }
 
     const usarPasse = () => {
-      /*  const aux = true;
-        firestore().collection("passesUser").where("idUser","==",user.uid).get().then(query => {
-            query.forEach(doc => {
-                if(doc.exists){
-                    navigation.navigate("Título em utilização", {titulo: doc.data(), isBilhete: isBilhete, isPasse: aux, isZapping: isZapping})
-                }    
-            });
-            
-        })*/
-        navigation.navigate("Home")
+        if(route.params.passe){
+            Alert.alert("Boa viagem", "Título utilizado com sucesso!")
+            navigation.navigate("Início")
+        }
+        else{
+            Alert.alert("Não possui nenhum passe válido", "Verifique se tens o passe carregado")
+        }
+        
     }
 
     if(!titulos){
@@ -98,7 +108,7 @@ function TitulosValidos({route, navigation}) {
                 <View style={styles.view}>
                     <TouchableOpacity style={styles.button} onPress={() => usarZapping()}>
                         <Text style={styles.title}>Zapping</Text>
-                        <Text style={styles.text}>Saldo Disponível: {route.params.zapping ? route.params.zapping.Valor : ""}€</Text>
+                        <Text style={styles.text}>Saldo Disponível: {route.params.zapping ? route.params.zapping.Valor.toFixed(2) : ""}€</Text>
                         <Text style={styles.text1}>Custo da viagem: 1,90€</Text>
                     </TouchableOpacity>
                 </View>
@@ -109,7 +119,6 @@ function TitulosValidos({route, navigation}) {
                 keyExtractor= {(item) => (item.id)}
                 showsVerticalScrollIndicator={false}
                 renderItem = { ({item}) => 
-                
                     <View style={styles.view}> 
                         <TouchableOpacity style={styles.button} onPress={() => usarTitulo(item.id)}>
                             <Text style={styles.text}>Origem: {item.Origem}</Text>
